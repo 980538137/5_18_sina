@@ -22,6 +22,7 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +39,7 @@ import android.widget.Toast;
 
 public class MsgActivity extends BaseActivity implements IWeiboActivity,
 		OnClickListener {
+	private static final String TAG = "MsgActivity";
 	// ViewPager
 	private ViewPager mViewPager = null;
 	private List<View> mViews = null;
@@ -406,6 +408,7 @@ public class MsgActivity extends BaseActivity implements IWeiboActivity,
 			MsgAtAdapter aTAdapter = null;
 			MsgCommentAdapter commentAdapter = null;
 			if (params[2].equals("status")) {
+				Log.d(TAG, "status");
 				@SuppressWarnings("unchecked")
 				List<Status> statuses = (List<Status>) params[0];
 				aTAdapter = new MsgAtAdapter(statuses, this);
@@ -414,13 +417,16 @@ public class MsgActivity extends BaseActivity implements IWeiboActivity,
 							.get(statuses.size() - 1).getMid()) - 1;
 					switch (at_current_state) {
 					case AT_INITIATE:
+						Log.d(TAG, "init");
 						lv_msg_at.setAdapter(aTAdapter);
 						break;
 					case AT_MORE_NEW:
+						Log.d(TAG, "more_new");
 						lv_msg_at.setAdapter(aTAdapter);
 						lv_msg_at.onRefreshComplete();
 						break;
 					case AT_MORE_OLD:
+						Log.d(TAG, "more_old");
 						aTAdapter.refresh(statuses);
 						if (aTAdapter.getCount() >= 20) {
 							lv_msg_at.setSelection(aTAdapter.getCount() - 20);
@@ -504,6 +510,7 @@ public class MsgActivity extends BaseActivity implements IWeiboActivity,
 				}
 			} else {
 				mCommentAdapter.notifyDataSetChanged();
+				lv_msg_comment.setAdapter(mCommentAdapter);
 				lv_msg_comment.resetFooter();
 				Toast.makeText(this, "暂无数据", Toast.LENGTH_SHORT).show();
 			}

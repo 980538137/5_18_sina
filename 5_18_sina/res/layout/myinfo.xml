@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="最近联系人"
+            android:text="好友"
             android:textColor="@color/weibo"
             android:textSize="18sp" />
     </FrameLayout>

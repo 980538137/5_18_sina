@@ -16,6 +16,7 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.text.Html;
 import android.util.FloatMath;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -137,12 +138,12 @@ public class WeiboAdapter extends BaseAdapter {
 			weiboHolder.iv_portrait_v_red.setVisibility(View.GONE);
 			weiboHolder.iv_portrait_v_blue.setVisibility(View.GONE);
 			weiboHolder.iv_portrait_v_yellow.setVisibility(View.VISIBLE);
-		}else if (status.getUser().isVerified()
+		} else if (status.getUser().isVerified()
 				&& status.getUser().getVerified_type() != 0) {
 			weiboHolder.iv_portrait_v_red.setVisibility(View.GONE);
 			weiboHolder.iv_portrait_v_yellow.setVisibility(View.GONE);
 			weiboHolder.iv_portrait_v_blue.setVisibility(View.VISIBLE);
-		}else {
+		} else {
 			weiboHolder.iv_portrait_v_red.setVisibility(View.GONE);
 			weiboHolder.iv_portrait_v_yellow.setVisibility(View.GONE);
 			weiboHolder.iv_portrait_v_blue.setVisibility(View.GONE);
@@ -156,9 +157,10 @@ public class WeiboAdapter extends BaseAdapter {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
-			SimpleParseManager.parseTime(weiboHolder.tv_wb_time, status.getCreated_at());
+			SimpleParseManager.parseTime(weiboHolder.tv_wb_time,
+					status.getCreated_at());
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
@@ -197,8 +199,9 @@ public class WeiboAdapter extends BaseAdapter {
 						weiboHolder.iv_wb_item_subcontent_subpic, sub_imgURl,
 						context, CONTENT_IMG);
 				weiboHolder.iv_wb_item_subcontent_subpic
-						.setOnClickListener(new PicOnClickListener(status.getRetweeted_Status().
-								getBmiddle_pic(), status.getRetweeted_Status().getOriginal_pic()));
+						.setOnClickListener(new PicOnClickListener(status
+								.getRetweeted_Status().getBmiddle_pic(), status
+								.getRetweeted_Status().getOriginal_pic()));
 
 			} else {
 				weiboHolder.iv_wb_item_subcontent_subpic
@@ -233,13 +236,15 @@ public class WeiboAdapter extends BaseAdapter {
 		TextView tv_wb_item_comment;
 		TextView tv_wb_item_attitude;
 	}
-    //在加载更多微博时，调用此方法更新adapter
+
+	// 在加载更多微博时，调用此方法更新adapter
 	public void refresh(List<Status> new_statuses) {
 		statuses.addAll(new_statuses);
 		this.notifyDataSetChanged();
 
 	}
-    //图片点击监听类
+
+	// 图片点击监听类
 	class PicOnClickListener implements OnClickListener {
 		String bmiddle_picURL = null;
 		String original_picURL = null;
@@ -258,6 +263,7 @@ public class WeiboAdapter extends BaseAdapter {
 			// OriginalPicOnclickListener(
 			// original_picURL));
 			imgDialog.show();
+			
 			SimpleImageLoader.showWbContentImg(iv_pic, bmiddle_picURL, pb_pic,
 					btn_original_pic, context);
 		}
@@ -326,7 +332,7 @@ public class WeiboAdapter extends BaseAdapter {
 					newDistance = spacing(event);
 					if (newDistance > 10) {
 						float scale = newDistance / oldDistance;
-						
+
 						matrix.set(savedMatrix);
 						matrix.postScale(scale, scale, mid.x, mid.y);
 
