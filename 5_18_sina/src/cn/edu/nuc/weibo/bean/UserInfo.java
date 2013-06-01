@@ -2,6 +2,15 @@ package cn.edu.nuc.weibo.bean;
 
 public class UserInfo {
 
+	public UserInfo(String uid, String access_token, String expires_in,
+			String start_time) {
+		super();
+		this.uid = uid;
+		this.access_token = access_token;
+		this.expires_in = expires_in;
+		this.start_time = start_time;
+	}
+
 	private String uid;
 	private String access_token;
 	private String expires_in;

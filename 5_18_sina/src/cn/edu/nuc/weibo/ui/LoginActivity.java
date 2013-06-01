@@ -4,6 +4,7 @@ import com.weibo.net.AccessToken;
 import com.weibo.net.Weibo;
 
 import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.db.UserInfoService;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,8 @@ public class LoginActivity extends Activity {
 				this.finish();
 			}else {
 				Intent intent = new Intent(LoginActivity.this,MainTabActivity.class);
+				UserInfoService mUserInfoService = new UserInfoService(this);
+				mUserInfoService.getAllUserInfo();
 				AccessToken accessToken = new AccessToken(token, Weibo.getAppSecret());
 				accessToken.setExpiresIn(expires_in);
 				Weibo.getInstance().setAccessToken(accessToken);
