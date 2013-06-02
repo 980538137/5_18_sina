@@ -30,9 +30,11 @@ public class UserInfoService {
 		values.put("access_token", mUserInfo.getAccess_token());
 		values.put("expires_in", mUserInfo.getExpires_in());
 		values.put("start_time", mUserInfo.getStart_time());
+		values.put("screen_name", mUserInfo.getScreen_name());
 		db.insert(DBInfo.Table.USER_TABLE, null, values);
 		db.close();
 	}
+	
 
 	public ArrayList<UserInfo> getAllUserInfo() {
 		ArrayList<UserInfo> mUserInfos = new ArrayList<UserInfo>();
@@ -49,10 +51,12 @@ public class UserInfoService {
 						.getColumnIndex("expires_in"));
 				String start_time = mCursor.getString(mCursor
 						.getColumnIndex("start_time"));
+				String screen_name = mCursor.getString(mCursor
+						.getColumnIndex("screen_name"));
 				UserInfo mUserInfo = new UserInfo(uid, access_token,
-						expires_in, start_time);
-				Log.d(TAG, uid + "   " + access_token + "   "
-						+ expires_in + "   " + start_time);
+						expires_in, start_time, screen_name);
+				Log.d(TAG, uid + "   " + access_token + "   " + expires_in
+						+ "   " + start_time + "   " + screen_name);
 				mUserInfos.add(mUserInfo);
 			}
 		}

@@ -118,8 +118,8 @@ public class MainService extends Service implements Runnable {
 
 		switch (task.getTaskId()) {
 		case Task.WEIBO_USER_INFO:// 获取用户信息
-			return_msg = WeiboUtils.getUserInfo(mWeibo, Weibo.getAppKey());
-			msg.obj = return_msg;
+//			return_msg = WeiboUtils.getUserInfo(mWeibo, Weibo.getAppKey());
+//			msg.obj = return_msg;
 			break;
 		case Task.WEIBO_STATUSES_FRIENDS_TIMELINE:// 获取当前登录用户所关注用户的最新微博
 			WeiboHomeService mweiboHomeService = new WeiboHomeService(this);
@@ -197,6 +197,9 @@ public class MainService extends Service implements Runnable {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case Task.WEIBO_USER_INFO:
+				iWeiboActivity = (IWeiboActivity) MainService.this
+						.getActivityByName("");
+				iWeiboActivity.refresh(msg.obj);
 				break;
 			case Task.WEIBO_STATUSES_FRIENDS_TIMELINE:
 				iWeiboActivity = (IWeiboActivity) MainService.this

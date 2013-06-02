@@ -1,8 +1,14 @@
 package cn.edu.nuc.weibo.ui;
 
+import org.json.JSONException;
+
 import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.app.WeiboApplication;
+import cn.edu.nuc.weibo.bean.User;
 import cn.edu.nuc.weibo.bean.UserInfo;
 import cn.edu.nuc.weibo.db.UserInfoService;
+import cn.edu.nuc.weibo.util.JsonUtils;
+import cn.edu.nuc.weibo.util.WeiboUtils;
 
 import com.weibo.net.AccessToken;
 import com.weibo.net.DialogError;
@@ -147,15 +153,30 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 		/**
 		 * 在这里要save the access_token
 		 */
-		String token = values.getString("access_token");
-		String expires_in = values.getString("expires_in");
-		String uid = values.getString("uid");
-		long start_time = System.currentTimeMillis();
+		final String token = values.getString("access_token");
+		final String expires_in = values.getString("expires_in");
+		final String uid = values.getString("uid");
+		final long start_time = System.currentTimeMillis();
+		// 获取用户信息 
+		new Thread(new Runnable() {
 
-		UserInfo mUserInfo = new UserInfo(uid, token, expires_in,
-				String.valueOf(start_time));
-		UserInfoService mInfoService = new UserInfoService(this);
-		mInfoService.saveUserInfo(mUserInfo);
+			@Override
+			public void run() {
+				try {
+					String msgStr = WeiboUtils.getUserInfo(Weibo.getInstance(),
+							Weibo.getAppKey(), token, uid);
+					User mUser = JsonUtils.parseJsonFromUserInfo(msgStr);
+					UserInfo mUserInfo = new UserInfo(uid, token, expires_in,
+							String.valueOf(start_time), mUser.getScreen_name());
+					WeiboApplication.mUserInfoService.saveUserInfo(mUserInfo);
+					Log.d(TAG, mUser.getScreen_name());
+				} catch (WeiboException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 
 		// 保存登录用户的相关信息
 		SharedPreferences preferences = getSharedPreferences(
