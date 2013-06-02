@@ -19,14 +19,16 @@ public class DBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(DBInfo.Table.HOME_TABLE_CREATE);
-
+		db.execSQL(DBInfo.Table.USER_TABLE_CREATE);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
 		String sql = "DROP TABLE IF EXISTS " + DBInfo.Table.HOME_TABLE;
+		String sql2 = "DROP TABLE IF EXISTS " + DBInfo.Table.USER_TABLE;
 		db.execSQL(sql);
+		db.execSQL(sql2);
 		onCreate(db);
 
 	}

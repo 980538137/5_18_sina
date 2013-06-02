@@ -33,11 +33,12 @@ public class WeiboUtils {
 	 * @return
 	 * @throws WeiboException
 	 */
-	public static String getUserInfo(Weibo weibo, String source)
-			throws WeiboException {
+	public static String getUserInfo(Weibo weibo, String source, String token,
+			String uid) throws WeiboException {
 		WeiboParameters parameters = new WeiboParameters();
 		parameters.add("source", source);
-		parameters.add("screen_name", "song980538137");
+		parameters.add("access_token", token);
+		parameters.add("uid", uid);
 		String url_userinfo = Weibo.getSERVER() + "users/show.json";
 		return weibo.request(WeiboApplication.mContext, url_userinfo,
 				parameters, Utility.HTTPMETHOD_GET, weibo.getAccessToken());

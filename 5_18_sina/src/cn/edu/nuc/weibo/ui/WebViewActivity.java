@@ -1,6 +1,14 @@
 package cn.edu.nuc.weibo.ui;
 
+import org.json.JSONException;
+
 import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.app.WeiboApplication;
+import cn.edu.nuc.weibo.bean.User;
+import cn.edu.nuc.weibo.bean.UserInfo;
+import cn.edu.nuc.weibo.db.UserInfoService;
+import cn.edu.nuc.weibo.util.JsonUtils;
+import cn.edu.nuc.weibo.util.WeiboUtils;
 
 import com.weibo.net.AccessToken;
 import com.weibo.net.DialogError;
@@ -20,18 +28,20 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class WebViewActivity extends Activity implements WeiboDialogListener {
+	private static final String TAG = "WebViewActivity";
 	private WebView webView = null;
 	private ProgressDialog pd = null;
 	private WeiboDialogListener dialogListener = null;
-	//app_key
+	// app_key
 	private static final String CONSUMER_KEY = "2905041652";
-	//app_secret
+	// app_secret
 	private static final String CONSUMER_SECRET = "7d2f02b441c028a40cd12f06fa0bdf87";
 	private static final String MREDIRECTURL = "http://www.sina.com";
 	private Weibo weibo = null;
@@ -88,7 +98,8 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 			// 用户或授权服务器拒绝授予数据访问权限
 			dialogListener.onCancel();
 		} else {
-			dialogListener.onWeiboException(new WeiboException(error, Integer.parseInt(error_code)));
+			dialogListener.onWeiboException(new WeiboException(error, Integer
+					.parseInt(error_code)));
 		}
 	}
 
@@ -96,8 +107,9 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			Log.d(TAG, "shouldOverrideUrlLoading");
 			// 待后台增加对默认重定向地址的支持后修改下面的逻辑
-			String s= Weibo.getInstance().getRedirectUrl();
+			String s = Weibo.getInstance().getRedirectUrl();
 			if (url.startsWith(Weibo.getInstance().getRedirectUrl())) {
 				handleRedirectUrl(view, url);
 				return true;
@@ -110,12 +122,13 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 		@Override
 		public void onReceivedError(WebView view, int errorCode,
 				String description, String failingUrl) {
-
+			Log.d(TAG, "onReceivedError");
 		}
 
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			super.onPageStarted(view, url, favicon);
+			Log.d(TAG, "onPageStarted");
 			/**
 			 * 点击授权，url正确
 			 */
@@ -130,6 +143,7 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 		@Override
 		public void onPageFinished(WebView view, String url) {
 			super.onPageFinished(view, url);
+			Log.d(TAG, "onPageFinished");
 			pd.dismiss();
 		}
 	}
@@ -139,13 +153,34 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 		/**
 		 * 在这里要save the access_token
 		 */
-		String token = values.getString("access_token");
-        String expires_in = values.getString("expires_in");
-        String uid = values.getString("uid");
-        long start_time = System.currentTimeMillis();
-        //保存登录用户的相关信息
-		SharedPreferences preferences = getSharedPreferences("token_expires_in",
-				Context.MODE_PRIVATE);
+		final String token = values.getString("access_token");
+		final String expires_in = values.getString("expires_in");
+		final String uid = values.getString("uid");
+		final long start_time = System.currentTimeMillis();
+		// 获取用户信息 
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					String msgStr = WeiboUtils.getUserInfo(Weibo.getInstance(),
+							Weibo.getAppKey(), token, uid);
+					User mUser = JsonUtils.parseJsonFromUserInfo(msgStr);
+					UserInfo mUserInfo = new UserInfo(uid, token, expires_in,
+							String.valueOf(start_time), mUser.getScreen_name());
+					WeiboApplication.mUserInfoService.saveUserInfo(mUserInfo);
+					Log.d(TAG, mUser.getScreen_name());
+				} catch (WeiboException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
+		// 保存登录用户的相关信息
+		SharedPreferences preferences = getSharedPreferences(
+				"token_expires_in", Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 		editor.putString("token", token);
 		editor.putString("expires_in", expires_in);

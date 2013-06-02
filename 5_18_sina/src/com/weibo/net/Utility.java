@@ -89,6 +89,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -99,6 +100,8 @@ import android.webkit.CookieSyncManager;
  */
 
 public class Utility {
+
+	private static final String TAG = "Utility";
 
 	private static WeiboParameters mRequestHeader = new WeiboParameters();
 	private static HttpHeaderFactory mAuth;
@@ -209,7 +212,9 @@ public class Utility {
 		Bundle params = new Bundle();
 		if (s != null) {
 			String array[] = s.split("&");
+
 			for (String parameter : array) {
+				Log.d(TAG, parameter.toString());
 				String v[] = parameter.split("=");
 				params.putString(URLDecoder.decode(v[0]),
 						URLDecoder.decode(v[1]));
@@ -230,8 +235,10 @@ public class Utility {
 		url = url.replace("weiboconnect", "http");
 		try {
 			URL u = new URL(url);
-			System.out.println("parseUrl getQuery " + u.getQuery());
-			System.out.println("parseUrl getRef " + u.getRef());
+			Log.d(TAG,"parseUrl getQuery " + u.getQuery());
+			Log.d(TAG,"parseUrl getRef " + u.getRef());
+			Log.d(TAG,"userinfo  " + u.getUserInfo());
+			Log.d(TAG,"Stringinfo  " + u.toString());
 			Bundle b = decodeUrl(u.getQuery());
 			b.putAll(decodeUrl(u.getRef()));
 			return b;

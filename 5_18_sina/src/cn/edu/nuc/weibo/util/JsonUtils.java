@@ -21,16 +21,18 @@ import com.google.gson.Gson;
 public class JsonUtils {
 	/**
 	 * 解析服务器返回的comments Json数据
+	 * 
 	 * @param jsonData
 	 * @return
 	 * @throws JSONException
 	 */
-	public static List<Comment> parseJsonFromComments(String jsonData) throws JSONException{
-    	ArrayList<Comment> comments = new ArrayList<Comment>();
-    	JSONObject jo_comments = new JSONObject(jsonData);
-    	JSONArray ja_comments = (JSONArray) jo_comments.get("comments");
-    	Gson gson = new Gson();
-    	for (int i = 0; i < ja_comments.length(); i++) {
+	public static List<Comment> parseJsonFromComments(String jsonData)
+			throws JSONException {
+		ArrayList<Comment> comments = new ArrayList<Comment>();
+		JSONObject jo_comments = new JSONObject(jsonData);
+		JSONArray ja_comments = (JSONArray) jo_comments.get("comments");
+		Gson gson = new Gson();
+		for (int i = 0; i < ja_comments.length(); i++) {
 			Comment comment = new Comment();
 			JSONObject jo_comment = (JSONObject) ja_comments.get(i);
 			comment.setCreated_at(jo_comment.getString("created_at"));
@@ -38,11 +40,11 @@ public class JsonUtils {
 			comment.setText(jo_comment.getString("text"));
 			comment.setSource(jo_comment.getString("source"));
 			comment.setMid(jo_comment.getString("mid"));
-			//解析user Json对象
+			// 解析user Json对象
 			JSONObject jo_user = jo_comment.getJSONObject("user");
 			User user = gson.fromJson(jo_user.toString(), User.class);
 			comment.setUser(user);
-			//解析status Json对象
+			// 解析status Json对象
 			JSONObject jo_status = jo_comment.getJSONObject("status");
 			Status status = new Status();
 			status.setCreated_at(jo_status.getString("created_at"));
@@ -64,30 +66,32 @@ public class JsonUtils {
 					.getString("in_reply_to_user_id"));
 			status.setIn_reply_to_screen_name(jo_status
 					.getString("in_reply_to_screen_name"));
-			
+
 			if (jo_status.has("thumbnail_pic")) {
 				status.setThumbnail_pic(jo_status.getString("thumbnail_pic"));
-			}else {
+			} else {
 				status.setThumbnail_pic(null);
 			}
-			
+
 			if (jo_status.has("bmiddle_pic")) {
 				status.setBmiddle_pic(jo_status.getString("bmiddle_pic"));
-			}else {
+			} else {
 				status.setBmiddle_pic(null);
 			}
 			if (jo_status.has("original_pic")) {
 				status.setOriginal_pic(jo_status.getString("original_pic"));
-			}else {
+			} else {
 				status.setOriginal_pic(null);
 			}
 
 			JSONObject jo_status_user = jo_status.getJSONObject("user");
-			User status_user = gson.fromJson(jo_status_user.toString(), User.class);
+			User status_user = gson.fromJson(jo_status_user.toString(),
+					User.class);
 			status.setUser(status_user);
 
 			JSONObject jo_visible = jo_status.getJSONObject("visible");
-			Visiable visiable = gson.fromJson(jo_visible.toString(),Visiable.class);
+			Visiable visiable = gson.fromJson(jo_visible.toString(),
+					Visiable.class);
 			status.setVisiable(visiable);
 
 			status.setReposts_count(jo_status.getInt("reposts_count"));
@@ -97,10 +101,11 @@ public class JsonUtils {
 			comment.setStatus(status);
 			comments.add(comment);
 		}
-    	return comments;
-    }
+		return comments;
+	}
+
 	/**
-	 * 解析服务器返回的friendstimeline  json数据
+	 * 解析服务器返回的friendstimeline json数据
 	 * 
 	 * @param jsonData
 	 * @return
@@ -134,47 +139,48 @@ public class JsonUtils {
 					.getString("in_reply_to_user_id"));
 			status.setIn_reply_to_screen_name(jo_status
 					.getString("in_reply_to_screen_name"));
-			
+
 			if (jo_status.has("thumbnail_pic")) {
 				status.setThumbnail_pic(jo_status.getString("thumbnail_pic"));
-			}else {
+			} else {
 				status.setThumbnail_pic(null);
 			}
-			
+
 			if (jo_status.has("bmiddle_pic")) {
 				status.setBmiddle_pic(jo_status.getString("bmiddle_pic"));
-			}else {
+			} else {
 				status.setBmiddle_pic(null);
 			}
 			if (jo_status.has("original_pic")) {
 				status.setOriginal_pic(jo_status.getString("original_pic"));
-			}else {
+			} else {
 				status.setOriginal_pic(null);
 			}
-			//解析user Json对象
+			// 解析user Json对象
 			JSONObject jo_user = jo_status.getJSONObject("user");
 			User user = gson.fromJson(jo_user.toString(), User.class);
 			status.setUser(user);
-            
-			//解析geo Json对象
+
+			// 解析geo Json对象
 			if (!jo_status.isNull("geo")) {
 				JSONObject jo_geo = jo_status.getJSONObject("geo");
 				String type = (String) jo_geo.get("type");
-				Object object= jo_geo.get("coordinates");
+				Object object = jo_geo.get("coordinates");
 				String coordinates = object.toString();
 				Geo geo = new Geo();
 				geo.setType(type);
-				String longitude = coordinates.substring(1, coordinates.indexOf(","));
-				String latitude = coordinates.substring(coordinates.indexOf(",")+1, coordinates.length()-1);
+				String longitude = coordinates.substring(1,
+						coordinates.indexOf(","));
+				String latitude = coordinates.substring(
+						coordinates.indexOf(",") + 1, coordinates.length() - 1);
 				geo.setLongitude(longitude);
 				geo.setLatitude(latitude);
 				status.setGeo(geo);
-			}else {
+			} else {
 				status.setGeo(null);
 			}
-			
-			
-			//解析Retweeted_Status Json对象
+
+			// 解析Retweeted_Status Json对象
 			if (jo_status.has("retweeted_status")) {
 				try {
 					status.setRetweeted_Status(parseRetweeted_Status(jo_status));
@@ -223,9 +229,9 @@ public class JsonUtils {
 		retweeted_Status.setMid(jo_Retweeted_Status.getString("mid"));
 		retweeted_Status.setIdstr(jo_Retweeted_Status.getString("idstr"));
 		retweeted_Status.setText(jo_Retweeted_Status.getString("text"));
-		
+
 		retweeted_Status.setSource(jo_Retweeted_Status.getString("source"));
-		
+
 		retweeted_Status.setFavorited(jo_Retweeted_Status
 				.getBoolean("favorited"));
 		retweeted_Status.setTruncated(jo_Retweeted_Status
@@ -236,21 +242,24 @@ public class JsonUtils {
 				.getString("in_reply_to_user_id"));
 		retweeted_Status.setIn_reply_to_screen_name(jo_Retweeted_Status
 				.getString("in_reply_to_screen_name"));
-		
+
 		if (jo_Retweeted_Status.has("thumbnail_pic")) {
-			retweeted_Status.setThumbnail_pic(jo_Retweeted_Status.getString("thumbnail_pic"));
-		}else {
+			retweeted_Status.setThumbnail_pic(jo_Retweeted_Status
+					.getString("thumbnail_pic"));
+		} else {
 			retweeted_Status.setThumbnail_pic(null);
 		}
-		
+
 		if (jo_Retweeted_Status.has("bmiddle_pic")) {
-			retweeted_Status.setBmiddle_pic(jo_Retweeted_Status.getString("bmiddle_pic"));
-		}else {
+			retweeted_Status.setBmiddle_pic(jo_Retweeted_Status
+					.getString("bmiddle_pic"));
+		} else {
 			retweeted_Status.setBmiddle_pic(null);
 		}
 		if (jo_Retweeted_Status.has("original_pic")) {
-			retweeted_Status.setOriginal_pic(jo_Retweeted_Status.getString("original_pic"));
-		}else {
+			retweeted_Status.setOriginal_pic(jo_Retweeted_Status
+					.getString("original_pic"));
+		} else {
 			retweeted_Status.setOriginal_pic(null);
 		}
 
@@ -282,13 +291,15 @@ public class JsonUtils {
 		retweeted_Status.setMlevel(jo_Retweeted_Status.getInt("mlevel"));
 		return retweeted_Status;
 	}
+
 	/**
 	 * 解析Geos Json对象
+	 * 
 	 * @param jsonData
 	 * @return
 	 * @throws JSONException
 	 */
-	public static Geos parseJsonFromGeos(String jsonData) throws JSONException{
+	public static Geos parseJsonFromGeos(String jsonData) throws JSONException {
 		Geos geos = new Geos();
 		JSONObject jo_geos = new JSONObject(jsonData);
 		JSONArray ja_geos = jo_geos.getJSONArray("geos");
@@ -299,5 +310,40 @@ public class JsonUtils {
 			geos = gson.fromJson(jo_geo.toString(), Geos.class);
 		}
 		return geos;
-	} 
+	}
+
+	public static User parseJsonFromUserInfo(String jsonData)
+			throws JSONException {
+		User mUser = new User();
+		JSONObject jo_user = new JSONObject(jsonData);
+		mUser.setId(jo_user.getInt("id"));
+		mUser.setIdstr(jo_user.getString("screen_name"));
+		mUser.setScreen_name(jo_user.getString("name"));
+		mUser.setProvince(String.valueOf(jo_user.getInt("province")));
+		mUser.setCity(String.valueOf(jo_user.getInt("city")));
+		mUser.setLocation(jo_user.getString("location"));
+		mUser.setDescription(jo_user.getString("description"));
+		mUser.setUrl(jo_user.getString("url"));
+		mUser.setProfile_image_url(jo_user.getString("profile_image_url"));
+		mUser.setProfile_url(jo_user.getString("profile_url"));
+		mUser.setDomain(jo_user.getString("domain"));
+		mUser.setGender(jo_user.getString("gender"));
+		mUser.setFollowers_count(jo_user.getInt("followers_count"));
+		mUser.setFriends_count(jo_user.getInt("friends_count"));
+		mUser.setStatuses_count(jo_user.getInt("statuses_count"));
+		mUser.setFavourites_count(jo_user.getInt("favourites_count"));
+		mUser.setCreated_at(jo_user.getString("created_at"));
+		mUser.setFollowing(jo_user.getBoolean("following"));
+		mUser.setAllow_all_act_msg(jo_user.getBoolean("allow_all_act_msg"));
+		mUser.setGeo_enabled(jo_user.getBoolean("geo_enabled"));
+		mUser.setVerified(jo_user.getBoolean("verified"));
+		mUser.setVerified_type(jo_user.getInt("verified_type"));
+		mUser.setAllow_all_comment(jo_user.getBoolean("allow_all_comment"));
+		mUser.setAvatar_large(jo_user.getString("avatar_large"));
+		mUser.setVerified_reason("verified_reason");
+		mUser.setFollow_me(jo_user.getBoolean("follow_me"));
+		mUser.setOnline_status(jo_user.getInt("online_status"));
+		mUser.setBi_followers_count(jo_user.getInt("bi_followers_count"));
+		return mUser;
+	}
 }
