@@ -12,6 +12,7 @@ import org.json.JSONException;
 import android.text.TextUtils;
 import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Comment;
+import cn.edu.nuc.weibo.bean.Favorite;
 import cn.edu.nuc.weibo.bean.Geo;
 import cn.edu.nuc.weibo.bean.Geos;
 import cn.edu.nuc.weibo.bean.Status;
@@ -113,7 +114,8 @@ public class WeiboUtils {
 			JSONException {
 		WeiboParameters parameters = new WeiboParameters();
 		parameters.add("source", source);
-		parameters.add("screen_name", "song980538137");
+		parameters.add("screen_name",
+				WeiboApplication.mCurrentUser.getScreen_name());
 		if (taskParams.get("max_id") != null) {
 			String max_id = (String) taskParams.get("max_id");
 			parameters.add("max_id", max_id);
@@ -489,6 +491,49 @@ public class WeiboUtils {
 				.request(WeiboApplication.mContext, url, weiboParameters,
 						Utility.HTTPMETHOD_GET, weibo.getAccessToken());
 		return JsonUtils.parseJsonFromGeos(geoToAddress);
+	}
+
+	/**
+	 * 获取当前登录用户的发布微博
+	 * 
+	 * @return
+	 * @throws WeiboException
+	 * @throws JSONException
+	 */
+	public static List<Status> getCurrentUserTimeLine(Weibo weibo,
+			String source, HashMap<String, Object> mTaskParams)
+			throws WeiboException, JSONException {
+		WeiboParameters mParameters = new WeiboParameters();
+		mParameters.add("source", source);
+		if (mTaskParams.get("max_id") != null) {
+			String max_id = (String) mTaskParams.get("max_id");
+			mParameters.add("max_id", max_id);
+		}
+
+		String url_user_timeline = Weibo.getSERVER()
+				+ "statuses/user_timeline.json";
+		String statusStr = weibo.request(WeiboApplication.mContext,
+				url_user_timeline, mParameters, Utility.HTTPMETHOD_GET,
+				weibo.getAccessToken());
+		return JsonUtils.parseJsonFromStatuses(statusStr);
+
+	}
+
+	public static List<Favorite> getCurrentUserFavorites(Weibo weibo,
+			String source, HashMap<String, Object> mTaskParams)
+			throws WeiboException, JSONException {
+		WeiboParameters mParameters = new WeiboParameters();
+		mParameters.add("source", source);
+		mParameters.add("count", "20");
+		if (mTaskParams.get("max_id") != null) {
+			String max_id = (String) mTaskParams.get("max_id");
+			mParameters.add("max_id", max_id);
+		}
+		String url_user_favorites = Weibo.getSERVER() + "favorites.json";
+		String favoriteStr = weibo.request(WeiboApplication.mContext,
+				url_user_favorites, mParameters, Utility.HTTPMETHOD_GET,
+				weibo.getAccessToken());
+		return JsonUtils.parseJsonFromFavorites(favoriteStr);
 	}
 
 }

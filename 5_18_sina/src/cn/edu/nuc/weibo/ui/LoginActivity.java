@@ -1,28 +1,16 @@
 package cn.edu.nuc.weibo.ui;
 
-import org.json.JSONException;
-
-import com.weibo.net.AccessToken;
-import com.weibo.net.Oauth2AccessTokenHeader;
-import com.weibo.net.Utility;
-import com.weibo.net.Weibo;
-import com.weibo.net.WeiboException;
-
-import cn.edu.nuc.weibo.R;
-import cn.edu.nuc.weibo.app.WeiboApplication;
-import cn.edu.nuc.weibo.db.UserInfoService;
-import cn.edu.nuc.weibo.logic.MainService;
-import cn.edu.nuc.weibo.util.JsonUtils;
-import cn.edu.nuc.weibo.util.WeiboUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import cn.edu.nuc.weibo.R;
+
+import com.weibo.net.AccessToken;
+import com.weibo.net.Weibo;
 
 public class LoginActivity extends Activity {
 	private static final String TAG = "LoginActivity";

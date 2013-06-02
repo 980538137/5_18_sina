@@ -15,7 +15,9 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 import cn.edu.nuc.weibo.bean.Comment;
+import cn.edu.nuc.weibo.bean.Favorite;
 import cn.edu.nuc.weibo.bean.Geos;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
@@ -29,6 +31,7 @@ import com.weibo.net.Weibo;
 import com.weibo.net.WeiboException;
 
 public class MainService extends Service implements Runnable {
+	private static final String TAG = "MainService";
 	private static Queue<Task> mTasks = new LinkedList<Task>();
 	private static List<Activity> mActivities = new ArrayList<Activity>();
 	private boolean isRunning = true;
@@ -115,11 +118,12 @@ public class MainService extends Service implements Runnable {
 		String return_msg = null;
 		List<Status> mStatuses = null;
 		List<Comment> mComments = null;
+		ArrayList<Favorite> mFavorites = null;
 
 		switch (task.getTaskId()) {
 		case Task.WEIBO_USER_INFO:// 获取用户信息
-//			return_msg = WeiboUtils.getUserInfo(mWeibo, Weibo.getAppKey());
-//			msg.obj = return_msg;
+			// return_msg = WeiboUtils.getUserInfo(mWeibo, Weibo.getAppKey());
+			// msg.obj = return_msg;
 			break;
 		case Task.WEIBO_STATUSES_FRIENDS_TIMELINE:// 获取当前登录用户所关注用户的最新微博
 			WeiboHomeService mweiboHomeService = new WeiboHomeService(this);
@@ -186,6 +190,18 @@ public class MainService extends Service implements Runnable {
 			Geos geos = WeiboUtils.getGeoToAddress(mWeibo, Weibo.getAppKey(),
 					mStatuses);
 			msg.obj = geos;
+			break;
+		case Task.WEIBO_MYINFO_STATUSES:
+			mStatuses = WeiboUtils.getCurrentUserTimeLine(mWeibo,
+					Weibo.getAppKey(), mTaskParams);
+			msg.obj = mStatuses;
+			break;
+		case Task.WEIBO_MYINFO_FAVORITES:
+			mFavorites = (ArrayList<Favorite>) WeiboUtils
+					.getCurrentUserFavorites(mWeibo, Weibo.getAppKey(),
+							mTaskParams);
+			Log.d(TAG, "Favorite SIze:" + mFavorites.size());
+			msg.obj = mFavorites;
 			break;
 		}
 		handler.sendMessage(msg);
@@ -256,6 +272,17 @@ public class MainService extends Service implements Runnable {
 			case Task.WEIBO_STATUSES_REPOST:
 				iWeiboActivity = (IWeiboActivity) MainService.this
 						.getActivityByName("RedirectActivity");
+				iWeiboActivity.refresh(msg.obj);
+				break;
+			case Task.WEIBO_MYINFO_STATUSES:
+				iWeiboActivity = (IWeiboActivity) MainService.this
+						.getActivityByName("MyInfoWbActivity");
+				iWeiboActivity.refresh(msg.obj);
+				break;
+			case Task.WEIBO_MYINFO_FAVORITES:
+				iWeiboActivity = (IWeiboActivity) MainService.this
+						.getActivityByName("MyInfoFavActivity");
+				Log.d(TAG,"" + msg.obj);
 				iWeiboActivity.refresh(msg.obj);
 				break;
 			}

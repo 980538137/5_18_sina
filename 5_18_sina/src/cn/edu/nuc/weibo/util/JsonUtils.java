@@ -8,7 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
 import cn.edu.nuc.weibo.bean.Comment;
+import cn.edu.nuc.weibo.bean.Favorite;
 import cn.edu.nuc.weibo.bean.Geo;
 import cn.edu.nuc.weibo.bean.Geos;
 import cn.edu.nuc.weibo.bean.Retweeted_Status;
@@ -19,6 +21,8 @@ import cn.edu.nuc.weibo.bean.Visiable;
 import com.google.gson.Gson;
 
 public class JsonUtils {
+	private static final String TAG = "JsonUtils";
+
 	/**
 	 * 解析服务器返回的comments Json数据
 	 * 
@@ -345,5 +349,113 @@ public class JsonUtils {
 		mUser.setOnline_status(jo_user.getInt("online_status"));
 		mUser.setBi_followers_count(jo_user.getInt("bi_followers_count"));
 		return mUser;
+	}
+
+	/**
+	 * 解析收藏Json数据
+	 * 
+	 * @param jsonData
+	 * @return
+	 * @throws JSONException
+	 */
+	public static List<Favorite> parseJsonFromFavorites(String jsonData)
+			throws JSONException {
+		ArrayList<Favorite> favorites = new ArrayList<Favorite>();
+		JSONObject jo_favorites = new JSONObject(jsonData);
+		JSONArray ja_favorites = (JSONArray) jo_favorites.get("favorites");
+		Gson gson = new Gson();
+		for (int i = 0; i < ja_favorites.length(); i++) {
+			Status status = new Status();
+			JSONObject jo_favorite = (JSONObject) ja_favorites.get(i);
+			JSONObject jo_status = (JSONObject) jo_favorite.get("status");
+			status.setCreated_at(jo_status.getString("created_at"));
+			Log.d(TAG, "" + jo_status.getString("created_at"));
+			status.setId(jo_status.getLong("id"));
+			status.setMid(jo_status.getString("mid"));
+			status.setIdstr(jo_status.getString("idstr"));
+			status.setText(jo_status.getString("text"));
+			try {
+				status.setSource(jo_status.getString("source"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				continue;
+			}
+			status.setFavorited(jo_status.getBoolean("favorited"));
+			status.setTruncated(jo_status.getBoolean("truncated"));
+			status.setIn_reply_to_status_id(jo_status
+					.getString("in_reply_to_status_id"));
+			status.setIn_reply_to_user_id(jo_status
+					.getString("in_reply_to_user_id"));
+			status.setIn_reply_to_screen_name(jo_status
+					.getString("in_reply_to_screen_name"));
+
+			if (jo_status.has("thumbnail_pic")) {
+				status.setThumbnail_pic(jo_status.getString("thumbnail_pic"));
+			} else {
+				status.setThumbnail_pic(null);
+			}
+
+			if (jo_status.has("bmiddle_pic")) {
+				status.setBmiddle_pic(jo_status.getString("bmiddle_pic"));
+			} else {
+				status.setBmiddle_pic(null);
+			}
+			if (jo_status.has("original_pic")) {
+				status.setOriginal_pic(jo_status.getString("original_pic"));
+			} else {
+				status.setOriginal_pic(null);
+			}
+			// 解析user Json对象
+			JSONObject jo_user = jo_status.getJSONObject("user");
+			User user = gson.fromJson(jo_user.toString(), User.class);
+			status.setUser(user);
+
+			// 解析geo Json对象
+			if (!jo_status.isNull("geo")) {
+				JSONObject jo_geo = jo_status.getJSONObject("geo");
+				String type = (String) jo_geo.get("type");
+				Object object = jo_geo.get("coordinates");
+				String coordinates = object.toString();
+				Geo geo = new Geo();
+				geo.setType(type);
+				String longitude = coordinates.substring(1,
+						coordinates.indexOf(","));
+				String latitude = coordinates.substring(
+						coordinates.indexOf(",") + 1, coordinates.length() - 1);
+				geo.setLongitude(longitude);
+				geo.setLatitude(latitude);
+				status.setGeo(geo);
+			} else {
+				status.setGeo(null);
+			}
+
+			// 解析Retweeted_Status Json对象
+			if (jo_status.has("retweeted_status")) {
+				try {
+					status.setRetweeted_Status(parseRetweeted_Status(jo_status));
+				} catch (Exception e) {
+					e.printStackTrace();
+					continue;
+				}
+			} else {
+				status.setRetweeted_Status(null);
+			}
+
+			JSONObject jo_visible = jo_status.getJSONObject("visible");
+			Visiable visiable = gson.fromJson(jo_visible.toString(),
+					Visiable.class);
+			status.setVisiable(visiable);
+
+			status.setReposts_count(jo_status.getInt("reposts_count"));
+			status.setComments_count(jo_status.getInt("comments_count"));
+			status.setAttitudes_count(jo_status.getInt("attitudes_count"));
+			status.setMlevel(jo_status.getInt("mlevel"));
+			String favorited_time = (String) jo_favorite.get("favorited_time");
+			Log.d(TAG,"Favorite_time:" + favorited_time);
+			Favorite favorite = new Favorite(status, favorited_time);
+			favorites.add(favorite);
+		}
+		return favorites;
+
 	}
 }

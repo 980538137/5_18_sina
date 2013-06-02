@@ -1,5 +1,6 @@
 package cn.edu.nuc.weibo.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +28,6 @@ public class MyInfoActivity extends BaseActivity implements IWeiboActivity {
 
 	@Override
 	public void init() {
-
 		mPortraitImage = (ImageView) this.findViewById(R.id.iv_myinfo_portrait);
 		mUserName = (TextView) this.findViewById(R.id.tv_myinfo_username);
 		mWbNum = (TextView) this.findViewById(R.id.tv_myinfo_wb_num);
@@ -48,14 +48,15 @@ public class MyInfoActivity extends BaseActivity implements IWeiboActivity {
 	}
 
 	public void onMyClick(View v) {
-		// TODO Auto-generated method stub
 		int id = v.getId();
 		switch (id) {
 		case R.id.ll_myinfo_wb:
-			Toast.makeText(this, "wb", Toast.LENGTH_LONG).show();
+			Intent mIntent = new Intent(this, MyInfoWbActivity.class);
+			startActivity(mIntent);
 			break;
 		case R.id.ll_myinfo_fav:
-			Toast.makeText(this, "fav", Toast.LENGTH_LONG).show();
+			Intent mIntent2 = new Intent(this, MyInfoFavActivity.class);
+			startActivity(mIntent2);
 			break;
 		case R.id.ll_myinfo_follow:
 			Toast.makeText(this, "follow", Toast.LENGTH_LONG).show();

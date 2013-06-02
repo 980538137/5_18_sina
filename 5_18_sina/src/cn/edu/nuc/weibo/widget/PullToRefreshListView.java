@@ -183,34 +183,32 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 		final int y = (int) event.getY();
 		mBounceHack = false;
 		switch (event.getAction()) {
-			case MotionEvent.ACTION_UP :
-				Log.d(TAG, "Action_up");
-				if (!isVerticalScrollBarEnabled()) {
-					setVerticalScrollBarEnabled(true);
+		case MotionEvent.ACTION_UP:
+			Log.d(TAG, "Action_up");
+			if (!isVerticalScrollBarEnabled()) {
+				setVerticalScrollBarEnabled(true);
+			}
+			if (getFirstVisiblePosition() == 0 && mRefreshState != REFRESHING) {
+				if ((mRefreshView.getBottom() >= mRefreshViewHeight || mRefreshView
+						.getTop() >= 0) && mRefreshState == RELEASE_TO_REFRESH) {
+					mRefreshState = REFRESHING;
+					prepareForRefresh();
+					onRefresh();
+				} else if (mRefreshView.getBottom() < mRefreshViewHeight
+						|| mRefreshView.getTop() <= 0) {
+					resetHeader();
+					setSelection(1);
 				}
-				if (getFirstVisiblePosition() == 0
-						&& mRefreshState != REFRESHING) {
-					if ((mRefreshView.getBottom() >= mRefreshViewHeight || mRefreshView
-							.getTop() >= 0)
-							&& mRefreshState == RELEASE_TO_REFRESH) {
-						mRefreshState = REFRESHING;
-						prepareForRefresh();
-						onRefresh();
-					} else if (mRefreshView.getBottom() < mRefreshViewHeight
-							|| mRefreshView.getTop() <= 0) {
-						resetHeader();
-						setSelection(1);
-					}
-				}
-				break;
-			case MotionEvent.ACTION_DOWN :
-				Log.d(TAG, "Action_down");
-				mLastMotionY = y;
-				break;
-			case MotionEvent.ACTION_MOVE :
-				Log.d(TAG, "Action_move");
-				applyHeaderPadding(event);
-				break;
+			}
+			break;
+		case MotionEvent.ACTION_DOWN:
+			Log.d(TAG, "Action_down");
+			mLastMotionY = y;
+			break;
+		case MotionEvent.ACTION_MOVE:
+			Log.d(TAG, "Action_move");
+			applyHeaderPadding(event);
+			break;
 		}
 		return super.onTouchEvent(event);
 		// return true;
@@ -253,11 +251,13 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 			mRefreshViewProgress.setVisibility(View.GONE);
 		}
 	}
+
 	public void resetFooter() {
 		tv_more.setVisibility(View.VISIBLE);
 		ll_loading_more.setVisibility(View.INVISIBLE);
 	}
-	//此方法估计headerview的width和height
+
+	// 此方法估计headerview的width和height
 	private void measureView(View child) {
 		ViewGroup.LayoutParams params = child.getLayoutParams();
 		if (params == null) {
@@ -336,6 +336,7 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 			mOnScrollListener.onScrollStateChanged(view, scrollState);
 		}
 	}
+
 	public void prepareForRefresh() {
 		resetHeaderPadding();
 		mRefreshViewImage.setVisibility(View.GONE);
@@ -379,6 +380,7 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 	public interface OnRefreshListener {
 		public void onRefresh();
 	}
+
 	public interface onLoadOldListener {
 		public void onLoadOld();
 	}

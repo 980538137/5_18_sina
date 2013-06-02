@@ -26,6 +26,10 @@ public class Task {
 	public static final int WEIBO_EMOTIONS = 16;//获取官方表情
 	
 	public static final int WEIBO_PLACE_USER_TIMELINE = 17;//获取某个用户的位置动态 
+	/** 获取当前用户的微博*/
+	public static final int WEIBO_MYINFO_STATUSES = 18;
+	/** 获取当前用户收藏的微博*/
+	public static final int WEIBO_MYINFO_FAVORITES = 19;
 	
 	
 	public Task(int taskId,Map<String, Object> taskParams){

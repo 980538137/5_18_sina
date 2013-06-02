@@ -88,6 +88,14 @@
             android:name=".ui.RedirectActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        <activity
+            android:name=".ui.MyInfoWbActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".ui.MyInfoFavActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
 
         <service android:name=".logic.MainService" >
             <intent-filter>
