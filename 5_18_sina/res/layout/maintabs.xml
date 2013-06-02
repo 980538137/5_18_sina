@@ -33,7 +33,7 @@
         <RadioButton
             android:id="@+id/rb_home"
             style="@style/main_tab_bottom"
-            android:layout_width="96dip"
+            android:layout_width="120dip"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/home_btn_bg"
             android:text="@string/main_home" />
@@ -41,7 +41,7 @@
         <RadioButton
             android:id="@+id/rb_msg"
             style="@style/main_tab_bottom"
-            android:layout_width="96dip"
+            android:layout_width="120dip"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/msg_btn_bg"
             android:text="@string/main_news" />
@@ -49,23 +49,16 @@
         <RadioButton
             android:id="@+id/rb_myinfo"
             style="@style/main_tab_bottom"
-            android:layout_width="96dip"
+            android:layout_width="120dip"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/myself_btn_bg"
             android:text="@string/main_my_info" />
 
-        <RadioButton
-            android:id="@+id/rb_search"
-            style="@style/main_tab_bottom"
-            android:layout_width="96dip"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/search_btn_bg"
-            android:text="@string/menu_search" />
 
         <RadioButton
             android:id="@+id/rb_more"
             style="@style/main_tab_bottom"
-            android:layout_width="96dip"
+            android:layout_width="120dip"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/more_btn_bg"
             android:text="@string/more" />

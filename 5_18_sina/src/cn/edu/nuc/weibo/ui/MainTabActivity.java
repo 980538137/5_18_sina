@@ -1,15 +1,13 @@
 package cn.edu.nuc.weibo.ui;
 
-import cn.edu.nuc.weibo.R;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
+import cn.edu.nuc.weibo.R;
 
 public class MainTabActivity extends TabActivity {
 	private TabHost tabHost = null;
@@ -18,7 +16,6 @@ public class MainTabActivity extends TabActivity {
 	private static final String TAG_HOME = "home";
 	private static final String TAG_MSG = "msg";
 	private static final String TAG_MY_INFO = "myinfo";
-	private static final String TAG_SEARCH = "search";
 	private static final String TAG_MORE = "more";
 
 	@Override
@@ -40,10 +37,6 @@ public class MainTabActivity extends TabActivity {
 		TabHost.TabSpec myinfo = tabHost.newTabSpec(TAG_MY_INFO);
 		myinfo.setIndicator(TAG_MY_INFO);
 		myinfo.setContent(new Intent(this, MyInfoActivity.class));
-        //search
-		TabHost.TabSpec search = tabHost.newTabSpec(TAG_SEARCH);
-		search.setIndicator(TAG_SEARCH);
-		search.setContent(new Intent(this, SearchActivity.class));
         //more
 		TabHost.TabSpec more = tabHost.newTabSpec(TAG_MORE);
 		more.setIndicator(TAG_MORE);
@@ -52,7 +45,6 @@ public class MainTabActivity extends TabActivity {
 		tabHost.addTab(home);
 		tabHost.addTab(msg);
 		tabHost.addTab(myinfo);
-		tabHost.addTab(search);
 		tabHost.addTab(more);
 		radioGroup = (RadioGroup) this.findViewById(R.id.rg_main_btns);
 		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -68,9 +60,6 @@ public class MainTabActivity extends TabActivity {
 					break;
 				case R.id.rb_myinfo:
 					tabHost.setCurrentTabByTag(TAG_MY_INFO);
-					break;
-				case R.id.rb_search:
-					tabHost.setCurrentTabByTag(TAG_SEARCH);
 					break;
 				case R.id.rb_more:
 					tabHost.setCurrentTabByTag(TAG_MORE);

@@ -32,8 +32,6 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-		// 开启程序主框架逻辑
-		this.startService(new Intent(this, MainService.class));
 		sp = this
 				.getSharedPreferences("token_expires_in", Context.MODE_PRIVATE);
 		final String token = sp.getString("token", "");
