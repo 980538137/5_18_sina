@@ -34,7 +34,31 @@ public class UserInfoService {
 		db.insert(DBInfo.Table.USER_TABLE, null, values);
 		db.close();
 	}
-	
+
+	public UserInfo getUserInfo() {
+		UserInfo mUserInfo = null;
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		Cursor mCursor = db.query(DBInfo.Table.USER_TABLE, null, null, null,
+				null, null, null);
+		Log.d(TAG, "Count:" + mCursor.getCount());
+		if (mCursor.getCount() > 0) {
+			mCursor.moveToFirst();
+			String uid = mCursor.getString(mCursor.getColumnIndex("uid"));
+			String access_token = mCursor.getString(mCursor
+					.getColumnIndex("access_token"));
+			String expires_in = mCursor.getString(mCursor
+					.getColumnIndex("expires_in"));
+			String start_time = mCursor.getString(mCursor
+					.getColumnIndex("start_time"));
+			String screen_name = mCursor.getString(mCursor
+					.getColumnIndex("screen_name"));
+			mUserInfo = new UserInfo(uid, access_token, expires_in, start_time,
+					screen_name);
+			Log.d(TAG, uid + "   " + access_token + "   " + expires_in + "   "
+					+ start_time + "   " + screen_name);
+		}
+		return mUserInfo;
+	}
 
 	public ArrayList<UserInfo> getAllUserInfo() {
 		ArrayList<UserInfo> mUserInfos = new ArrayList<UserInfo>();
@@ -60,6 +84,7 @@ public class UserInfoService {
 				mUserInfos.add(mUserInfo);
 			}
 		}
+		db.close();
 		return mUserInfos;
 
 	}

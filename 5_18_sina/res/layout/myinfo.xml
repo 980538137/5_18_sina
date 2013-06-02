@@ -144,71 +144,78 @@
             android:textColor="@color/black" />
 
         <LinearLayout
+            android:id="@+id/ll_myinfo_wb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dip"
             android:background="@drawable/contacts_mebutton_background"
             android:gravity="center"
-            android:orientation="vertical" 
-            android:layout_marginLeft="5dip">
+            android:orientation="vertical"
+            android:onClick="onMyClick" >
 
             <TextView
                 android:id="@+id/tv_myinfo_wb_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="48"
-                android:textColor="@color/black" 
-                android:textSize="12sp"/>
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="微博"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/ll_myinfo_fav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dip"
             android:background="@drawable/contacts_mebutton_background"
             android:gravity="center"
             android:orientation="vertical" 
-            android:layout_marginLeft="5dip">
+            android:onClick="onMyClick">
 
             <TextView
                 android:id="@+id/tv_myinfo_favorite_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10"
-                android:textColor="@color/black" 
-                android:textSize="12sp"/>
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="收藏"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/ll_myinfo_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dip"
             android:background="@drawable/contacts_mebutton_background"
             android:gravity="center"
-            android:orientation="vertical"
-            android:layout_marginLeft="5dip" >
+            android:orientation="vertical" 
+            android:onClick="onMyClick">
 
             <TextView
-                android:id="@+id/tv_myinfo_wb_num"
+                android:id="@+id/tv_myinfo_follow_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5"
-                android:textColor="@color/black" 
-                android:textSize="12sp"/>
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
             <TextView
-                android:id="@+id/tv_myinfo_wb_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="粉丝"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 

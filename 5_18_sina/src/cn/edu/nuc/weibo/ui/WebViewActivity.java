@@ -157,7 +157,7 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 		final String expires_in = values.getString("expires_in");
 		final String uid = values.getString("uid");
 		final long start_time = System.currentTimeMillis();
-		// 获取用户信息 
+		// 获取用户信息
 		new Thread(new Runnable() {
 
 			@Override
@@ -169,6 +169,7 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 					UserInfo mUserInfo = new UserInfo(uid, token, expires_in,
 							String.valueOf(start_time), mUser.getScreen_name());
 					WeiboApplication.mUserInfoService.saveUserInfo(mUserInfo);
+					WeiboApplication.mCurrentUser = mUser;
 					Log.d(TAG, mUser.getScreen_name());
 				} catch (WeiboException e) {
 					e.printStackTrace();
