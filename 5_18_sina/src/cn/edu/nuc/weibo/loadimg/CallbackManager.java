@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 public class CallbackManager {
+	private static final String TAG = "CallbackManager";
 	ConcurrentHashMap<String, List<ImageCallback>> callbackMap = null;
 
 	public CallbackManager() {

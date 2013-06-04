@@ -30,6 +30,8 @@ public class Task {
 	public static final int WEIBO_MYINFO_STATUSES = 18;
 	/** 获取当前用户收藏的微博*/
 	public static final int WEIBO_MYINFO_FAVORITES = 19;
+	/** 获取当前用户的粉丝*/
+	public static final int WEIBO_MYINFO_FOLLOWERS = 20;
 	
 	
 	public Task(int taskId,Map<String, Object> taskParams){

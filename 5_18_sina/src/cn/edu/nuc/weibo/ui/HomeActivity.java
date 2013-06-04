@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -166,6 +167,8 @@ public class HomeActivity extends BaseActivity implements IWeiboActivity {
 			taskParams.put("max_id", String.valueOf(max_id));
 			break;
 		}
+		String uid = getSharedPreferences("token_expires_in", Context.MODE_PRIVATE).getString("uid", "");
+		taskParams.put("uid", uid);
 		task = new Task(Task.WEIBO_STATUSES_FRIENDS_TIMELINE, taskParams);
 		MainService.addTask(task);
 		MainService.addActivity(this);

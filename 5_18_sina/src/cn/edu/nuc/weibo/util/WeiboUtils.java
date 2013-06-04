@@ -17,6 +17,7 @@ import cn.edu.nuc.weibo.bean.Geo;
 import cn.edu.nuc.weibo.bean.Geos;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
+import cn.edu.nuc.weibo.bean.User;
 import cn.edu.nuc.weibo.db.WeiboHomeService;
 import cn.edu.nuc.weibo.ui.HomeActivity;
 
@@ -114,8 +115,7 @@ public class WeiboUtils {
 			JSONException {
 		WeiboParameters parameters = new WeiboParameters();
 		parameters.add("source", source);
-		parameters.add("screen_name",
-				WeiboApplication.mCurrentUser.getScreen_name());
+		parameters.add("uid", (String) taskParams.get("uid"));
 		if (taskParams.get("max_id") != null) {
 			String max_id = (String) taskParams.get("max_id");
 			parameters.add("max_id", max_id);
@@ -534,6 +534,21 @@ public class WeiboUtils {
 				url_user_favorites, mParameters, Utility.HTTPMETHOD_GET,
 				weibo.getAccessToken());
 		return JsonUtils.parseJsonFromFavorites(favoriteStr);
+	}
+
+	public static List<User> getCurrentUserFollowers(Weibo weibo,
+			String source, HashMap<String, Object> mTaskParams)
+			throws WeiboException, JSONException {
+		WeiboParameters mParameters = new WeiboParameters();
+		mParameters.add("source", source);
+		mParameters.add("screen_name",
+				WeiboApplication.mCurrentUser.getScreen_name());
+		String url_user_followers = Weibo.getSERVER()
+				+ "friendships/followers.json";
+		String followersStr = weibo.request(WeiboApplication.mContext,
+				url_user_followers, mParameters, Utility.HTTPMETHOD_GET,
+				weibo.getAccessToken());
+		return JsonUtils.parseJsonFromFollowers(followersStr);
 	}
 
 }

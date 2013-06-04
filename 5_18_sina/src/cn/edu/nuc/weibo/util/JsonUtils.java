@@ -316,6 +316,47 @@ public class JsonUtils {
 		return geos;
 	}
 
+	public static List<User> parseJsonFromFollowers(String jsonData)
+			throws JSONException {
+		List<User> mUsers = new ArrayList<User>();
+		JSONObject jo_users = new JSONObject(jsonData);
+		JSONArray ja_users = (JSONArray) jo_users.get("users");
+		for (int i = 0; i < ja_users.length(); i++) {
+			User mUser = new User();
+			JSONObject jo_user = (JSONObject) ja_users.get(i);
+			mUser.setId(jo_user.getInt("id"));
+			mUser.setIdstr(jo_user.getString("screen_name"));
+			mUser.setScreen_name(jo_user.getString("name"));
+			mUser.setProvince(String.valueOf(jo_user.getInt("province")));
+			mUser.setCity(String.valueOf(jo_user.getInt("city")));
+			mUser.setLocation(jo_user.getString("location"));
+			mUser.setDescription(jo_user.getString("description"));
+			mUser.setUrl(jo_user.getString("url"));
+			mUser.setProfile_image_url(jo_user.getString("profile_image_url"));
+			mUser.setProfile_url(jo_user.getString("profile_url"));
+			mUser.setDomain(jo_user.getString("domain"));
+			mUser.setGender(jo_user.getString("gender"));
+			mUser.setFollowers_count(jo_user.getInt("followers_count"));
+			mUser.setFriends_count(jo_user.getInt("friends_count"));
+			mUser.setStatuses_count(jo_user.getInt("statuses_count"));
+			mUser.setFavourites_count(jo_user.getInt("favourites_count"));
+			mUser.setCreated_at(jo_user.getString("created_at"));
+			mUser.setFollowing(jo_user.getBoolean("following"));
+			mUser.setAllow_all_act_msg(jo_user.getBoolean("allow_all_act_msg"));
+			mUser.setGeo_enabled(jo_user.getBoolean("geo_enabled"));
+			mUser.setVerified(jo_user.getBoolean("verified"));
+			mUser.setVerified_type(jo_user.getInt("verified_type"));
+			mUser.setAllow_all_comment(jo_user.getBoolean("allow_all_comment"));
+			mUser.setAvatar_large(jo_user.getString("avatar_large"));
+			mUser.setVerified_reason("verified_reason");
+			mUser.setFollow_me(jo_user.getBoolean("follow_me"));
+			mUser.setOnline_status(jo_user.getInt("online_status"));
+			mUser.setBi_followers_count(jo_user.getInt("bi_followers_count"));
+			mUsers.add(mUser);
+		}
+		return mUsers;
+	}
+
 	public static User parseJsonFromUserInfo(String jsonData)
 			throws JSONException {
 		User mUser = new User();
@@ -451,7 +492,7 @@ public class JsonUtils {
 			status.setAttitudes_count(jo_status.getInt("attitudes_count"));
 			status.setMlevel(jo_status.getInt("mlevel"));
 			String favorited_time = (String) jo_favorite.get("favorited_time");
-			Log.d(TAG,"Favorite_time:" + favorited_time);
+			Log.d(TAG, "Favorite_time:" + favorited_time);
 			Favorite favorite = new Favorite(status, favorited_time);
 			favorites.add(favorite);
 		}

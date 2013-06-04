@@ -75,7 +75,7 @@ public class ParseTimeManager {
 				long time = currentTime - publishTime;
 				long second_time = time/1000;
 				if (second_time < 60) {
-					result = second_time + "秒前";
+					result = second_time + "刚刚";
 				}else if (second_time >= 60 && second_time < 3600) {
 					result = second_time/1000 + "分钟前";
 				}else if (second_time >= 3600 && second_time < 86400) {

@@ -59,7 +59,8 @@ public class MyInfoActivity extends BaseActivity implements IWeiboActivity {
 			startActivity(mIntent2);
 			break;
 		case R.id.ll_myinfo_follow:
-			Toast.makeText(this, "follow", Toast.LENGTH_LONG).show();
+			Intent mIntent3 = new Intent(this, MyInfoFollowActivity.class);
+			startActivity(mIntent3);
 			break;
 
 		default:

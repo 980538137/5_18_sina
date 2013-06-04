@@ -21,6 +21,7 @@ import cn.edu.nuc.weibo.bean.Favorite;
 import cn.edu.nuc.weibo.bean.Geos;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
+import cn.edu.nuc.weibo.bean.User;
 import cn.edu.nuc.weibo.db.WeiboHomeService;
 import cn.edu.nuc.weibo.ui.MsgActivity;
 import cn.edu.nuc.weibo.util.WeiboUtils;
@@ -203,6 +204,12 @@ public class MainService extends Service implements Runnable {
 			Log.d(TAG, "Favorite SIze:" + mFavorites.size());
 			msg.obj = mFavorites;
 			break;
+		case Task.WEIBO_MYINFO_FOLLOWERS:
+			ArrayList<User> mUsers = (ArrayList<User>) WeiboUtils
+					.getCurrentUserFollowers(mWeibo, Weibo.getAppKey(),
+							mTaskParams);
+			msg.obj = mUsers;
+			break;
 		}
 		handler.sendMessage(msg);
 	}
@@ -282,7 +289,11 @@ public class MainService extends Service implements Runnable {
 			case Task.WEIBO_MYINFO_FAVORITES:
 				iWeiboActivity = (IWeiboActivity) MainService.this
 						.getActivityByName("MyInfoFavActivity");
-				Log.d(TAG,"" + msg.obj);
+				iWeiboActivity.refresh(msg.obj);
+				break;
+			case Task.WEIBO_MYINFO_FOLLOWERS:
+				iWeiboActivity = (IWeiboActivity) MainService.this
+						.getActivityByName("MyInfoFollowActivity");
 				iWeiboActivity.refresh(msg.obj);
 				break;
 			}
