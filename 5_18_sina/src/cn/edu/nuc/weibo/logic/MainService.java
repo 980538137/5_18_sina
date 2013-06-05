@@ -18,6 +18,7 @@ import android.os.Message;
 import android.util.Log;
 import cn.edu.nuc.weibo.bean.Comment;
 import cn.edu.nuc.weibo.bean.Favorite;
+import cn.edu.nuc.weibo.bean.Followers;
 import cn.edu.nuc.weibo.bean.Geos;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
@@ -205,10 +206,9 @@ public class MainService extends Service implements Runnable {
 			msg.obj = mFavorites;
 			break;
 		case Task.WEIBO_MYINFO_FOLLOWERS:
-			ArrayList<User> mUsers = (ArrayList<User>) WeiboUtils
-					.getCurrentUserFollowers(mWeibo, Weibo.getAppKey(),
-							mTaskParams);
-			msg.obj = mUsers;
+			Followers mFollowers = WeiboUtils.getCurrentUserFollowers(mWeibo,
+					Weibo.getAppKey(), mTaskParams);
+			msg.obj = mFollowers;
 			break;
 		}
 		handler.sendMessage(msg);

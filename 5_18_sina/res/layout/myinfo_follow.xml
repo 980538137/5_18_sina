@@ -38,7 +38,8 @@
             android:layout_marginTop="5dip"
             android:background="@drawable/title_home_normal" />
     </FrameLayout>
-    <LinearLayout
+
+    <LinearLayout
         android:id="@+id/ll_loading"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -60,7 +61,7 @@
             android:text="@string/loading" />
     </LinearLayout>
 
-    <cn.edu.nuc.weibo.widget.PullToRefreshListView
+    <ListView
         android:id="@+id/myinfo_lv_wb"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

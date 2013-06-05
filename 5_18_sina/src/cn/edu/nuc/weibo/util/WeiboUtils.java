@@ -10,9 +10,11 @@ import java.util.List;
 import org.json.JSONException;
 
 import android.text.TextUtils;
+import android.util.Log;
 import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Comment;
 import cn.edu.nuc.weibo.bean.Favorite;
+import cn.edu.nuc.weibo.bean.Followers;
 import cn.edu.nuc.weibo.bean.Geo;
 import cn.edu.nuc.weibo.bean.Geos;
 import cn.edu.nuc.weibo.bean.Status;
@@ -536,9 +538,9 @@ public class WeiboUtils {
 		return JsonUtils.parseJsonFromFavorites(favoriteStr);
 	}
 
-	public static List<User> getCurrentUserFollowers(Weibo weibo,
-			String source, HashMap<String, Object> mTaskParams)
-			throws WeiboException, JSONException {
+	public static Followers getCurrentUserFollowers(Weibo weibo, String source,
+			HashMap<String, Object> mTaskParams) throws WeiboException,
+			JSONException {
 		WeiboParameters mParameters = new WeiboParameters();
 		mParameters.add("source", source);
 		mParameters.add("screen_name",
@@ -550,5 +552,4 @@ public class WeiboUtils {
 				weibo.getAccessToken());
 		return JsonUtils.parseJsonFromFollowers(followersStr);
 	}
-
 }

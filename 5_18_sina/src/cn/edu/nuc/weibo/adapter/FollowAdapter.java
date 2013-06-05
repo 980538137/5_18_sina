@@ -95,14 +95,22 @@ public class FollowAdapter extends BaseAdapter {
 		}
 		mFollowHolder.mTvScreenName.setText(mUser.getScreen_name());
 		mFollowHolder.mTvDescription.setText(mUser.getDomain());
-		mFollowHolder.mAttendBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Toast.makeText(mContext, "attend", Toast.LENGTH_SHORT).show();
-			}
-		});
+//		if (mUser.isFollowing()) {
+//
+//			mFollowHolder.mAttendBtn.setText(R.string.cancel_attend);
+//		} else {
+//			mFollowHolder.mAttendBtn
+//					.setBackgroundResource(R.drawable.contacts_mebutton_background);
+//			mFollowHolder.mAttendBtn.setText(R.string.attend);
+//		}
+//		mFollowHolder.mAttendBtn.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				Toast.makeText(mContext, "attend", Toast.LENGTH_SHORT).show();
+//			}
+//		});
 	}
 
 	private void findViews(FollowHolder followHolder, View convertView) {
@@ -118,8 +126,8 @@ public class FollowAdapter extends BaseAdapter {
 				.findViewById(R.id.tv_screen_name);
 		followHolder.mTvDescription = (TextView) convertView
 				.findViewById(R.id.tv_description);
-		followHolder.mAttendBtn = (Button) convertView
-				.findViewById(R.id.btn_attention);
+//		followHolder.mAttendBtn = (Button) convertView
+//				.findViewById(R.id.btn_attention);
 	}
 
 	private class FollowHolder {

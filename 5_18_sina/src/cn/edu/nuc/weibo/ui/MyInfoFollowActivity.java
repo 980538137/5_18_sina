@@ -6,14 +6,17 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 import cn.edu.nuc.weibo.R;
 import cn.edu.nuc.weibo.adapter.FollowAdapter;
 import cn.edu.nuc.weibo.adapter.WeiboAdapter;
+import cn.edu.nuc.weibo.bean.Followers;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
 import cn.edu.nuc.weibo.bean.User;
@@ -25,15 +28,16 @@ import cn.edu.nuc.weibo.widget.PullToRefreshListView.onLoadOldListener;
 
 public class MyInfoFollowActivity extends Activity implements IWeiboActivity,
 		OnClickListener {
+	private static final String TAG = "MyInfoFollowActivity";
 	private Button mBackBtn;
 	private Button mHomeBtn;
 
 	private LinearLayout mLoadingLayout;
-	private PullToRefreshListView mListView;
+	private ListView mListView;
 	private FollowAdapter mAdapter;
-	private ArrayList<User> mUsers;
-	// 加载数据时用的maxid
-	private long max_id = 0;
+	private Followers mFollowers;
+	private int nextCursor;
+	private int previousCursor;
 
 	// 加载数据状态
 	public static final int INITIATE = 1;
@@ -59,26 +63,26 @@ public class MyInfoFollowActivity extends Activity implements IWeiboActivity,
 		mBackBtn.setOnClickListener(this);
 		mHomeBtn.setOnClickListener(this);
 		mLoadingLayout = (LinearLayout) this.findViewById(R.id.ll_loading);
-		mListView = (PullToRefreshListView) this
+		mListView = (ListView) this
 				.findViewById(R.id.myinfo_lv_wb);
-		mListView.setOnRefreshListener(new OnRefreshListener() {
-
-			@Override
-			public void onRefresh() {
-				// TODO Auto-generated method stub
-				current_state = MORE_NEW;
-				createTask(current_state);
-			}
-		});
-		mListView.setOnLoadOldListener(new onLoadOldListener() {
-
-			@Override
-			public void onLoadOld() {
-				// TODO Auto-generated method stub
-				current_state = MORE_OLD;
-				createTask(current_state);
-			}
-		});
+//		mListView.setOnRefreshListener(new OnRefreshListener() {
+//
+//			@Override
+//			public void onRefresh() {
+//				// TODO Auto-generated method stub
+//				current_state = MORE_NEW;
+//				createTask(current_state);
+//			}
+//		});
+//		mListView.setOnLoadOldListener(new onLoadOldListener() {
+//
+//			@Override
+//			public void onLoadOld() {
+//				// TODO Auto-generated method stub
+//				current_state = MORE_OLD;
+//				createTask(current_state);
+//			}
+//		});
 		createTask(INITIATE);
 	}
 
@@ -86,7 +90,12 @@ public class MyInfoFollowActivity extends Activity implements IWeiboActivity,
 	@Override
 	public void refresh(Object... params) {
 		// TODO Auto-generated method stub
-		mUsers = (ArrayList<User>) params[0];
+		mFollowers = (Followers) params[0];
+
+		ArrayList<User> mUsers = (ArrayList<User>) mFollowers.getUsers();
+		nextCursor = mFollowers.getNextCursor();
+		previousCursor = mFollowers.getPreviousCursor();
+		Log.d(TAG, "next:" + nextCursor + "previous:" + previousCursor);
 		if (mUsers != null && mUsers.size() != 0) {
 			switch (current_state) {
 			case INITIATE:
@@ -97,19 +106,19 @@ public class MyInfoFollowActivity extends Activity implements IWeiboActivity,
 			case MORE_NEW:
 				mAdapter = new FollowAdapter(mUsers, this);
 				mListView.setAdapter(mAdapter);
-				mListView.onRefreshComplete();
+//				mListView.onRefreshComplete();
 				break;
 			case MORE_OLD:
 				mAdapter.refresh(mUsers);
 				mListView.setSelection(mAdapter.getCount() - 20);
-				mListView.resetFooter();
+//				mListView.resetFooter();
 				break;
 
 			default:
 				break;
 			}
 		} else {
-			mListView.onRefreshComplete();
+//			mListView.onRefreshComplete();
 			Toast.makeText(this, R.string.has_get_all, Toast.LENGTH_SHORT)
 					.show();
 		}
@@ -144,11 +153,13 @@ public class MyInfoFollowActivity extends Activity implements IWeiboActivity,
 			break;
 		case MORE_OLD:
 			mTaskParams.put("state", MORE_OLD);
+			mTaskParams.put("cursor", nextCursor);
 			break;
 
 		default:
 			break;
 		}
+		
 		mTask = new Task(Task.WEIBO_MYINFO_FOLLOWERS, mTaskParams);
 		MainService.addTask(mTask);
 		MainService.addActivity(this);

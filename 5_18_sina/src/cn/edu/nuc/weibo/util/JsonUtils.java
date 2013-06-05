@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.util.Log;
 import cn.edu.nuc.weibo.bean.Comment;
 import cn.edu.nuc.weibo.bean.Favorite;
+import cn.edu.nuc.weibo.bean.Followers;
 import cn.edu.nuc.weibo.bean.Geo;
 import cn.edu.nuc.weibo.bean.Geos;
 import cn.edu.nuc.weibo.bean.Retweeted_Status;
@@ -316,8 +317,9 @@ public class JsonUtils {
 		return geos;
 	}
 
-	public static List<User> parseJsonFromFollowers(String jsonData)
+	public static Followers parseJsonFromFollowers(String jsonData)
 			throws JSONException {
+		Followers mFollowers = new Followers();
 		List<User> mUsers = new ArrayList<User>();
 		JSONObject jo_users = new JSONObject(jsonData);
 		JSONArray ja_users = (JSONArray) jo_users.get("users");
@@ -354,7 +356,11 @@ public class JsonUtils {
 			mUser.setBi_followers_count(jo_user.getInt("bi_followers_count"));
 			mUsers.add(mUser);
 		}
-		return mUsers;
+		mFollowers.setUsers(mUsers);
+		mFollowers.setNextCursor(jo_users.getInt("next_cursor"));
+		mFollowers.setPreviousCursor(jo_users.getInt("previous_cursor"));
+		mFollowers.setTotalNumber(jo_users.getInt("total_number"));
+		return mFollowers;
 	}
 
 	public static User parseJsonFromUserInfo(String jsonData)
