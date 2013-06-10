@@ -40,7 +40,7 @@ public class MainTabActivity extends TabActivity {
         //more
 		TabHost.TabSpec more = tabHost.newTabSpec(TAG_MORE);
 		more.setIndicator(TAG_MORE);
-		more.setContent(new Intent(this, MoreActivity.class));
+		more.setContent(new Intent(this, SettingActivity.class));
         //将每个TabSpec加入到tabhost
 		tabHost.addTab(home);
 		tabHost.addTab(msg);

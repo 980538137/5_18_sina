@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="账号管理" >
+        <PreferenceScreen android:title="账号管理" >
+            <intent
+                android:targetClass="com.genius.demo.SkinActivity"
+                android:targetPackage="com.genius.demo" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="帮助" >
+        <PreferenceScreen
+            android:summary="反馈建议"
+            android:title="反馈建议" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://wap.3g.qq.com/g/s?aid=wapsupport&amp;amp;fid=647" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+</PreferenceScreen>

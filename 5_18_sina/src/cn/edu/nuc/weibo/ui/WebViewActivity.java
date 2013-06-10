@@ -2,23 +2,7 @@ package cn.edu.nuc.weibo.ui;
 
 import org.json.JSONException;
 
-import cn.edu.nuc.weibo.R;
-import cn.edu.nuc.weibo.app.WeiboApplication;
-import cn.edu.nuc.weibo.bean.User;
-import cn.edu.nuc.weibo.bean.UserInfo;
-import cn.edu.nuc.weibo.db.UserInfoService;
-import cn.edu.nuc.weibo.util.JsonUtils;
-import cn.edu.nuc.weibo.util.WeiboUtils;
-
-import com.weibo.net.AccessToken;
-import com.weibo.net.DialogError;
-import com.weibo.net.Oauth2AccessTokenHeader;
-import com.weibo.net.Utility;
-import com.weibo.net.Weibo;
-import com.weibo.net.WeiboDialogListener;
-import com.weibo.net.WeiboException;
-import com.weibo.net.WeiboParameters;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,6 +17,21 @@ import android.view.Window;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.app.WeiboApplication;
+import cn.edu.nuc.weibo.bean.User;
+import cn.edu.nuc.weibo.bean.UserInfo;
+import cn.edu.nuc.weibo.util.JsonUtils;
+import cn.edu.nuc.weibo.util.WeiboUtils;
+
+import com.weibo.net.AccessToken;
+import com.weibo.net.DialogError;
+import com.weibo.net.Oauth2AccessTokenHeader;
+import com.weibo.net.Utility;
+import com.weibo.net.Weibo;
+import com.weibo.net.WeiboDialogListener;
+import com.weibo.net.WeiboException;
+import com.weibo.net.WeiboParameters;
 
 public class WebViewActivity extends Activity implements WeiboDialogListener {
 	private static final String TAG = "WebViewActivity";
@@ -46,6 +45,7 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 	private static final String MREDIRECTURL = "http://www.sina.com";
 	private Weibo weibo = null;
 
+	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
