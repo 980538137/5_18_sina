@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
 -->
 <resources>
 
@@ -107,5 +107,7 @@
         <item name="android:layout_marginRight">1.0dip</item>
         <item name="android:layout_marginBottom">0.8000001dip</item>
     </style>
+
+
 
 </resources>

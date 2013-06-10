@@ -1,15 +1,33 @@
 package cn.edu.nuc.weibo.ui;
 
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import cn.edu.nuc.weibo.R;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
-public class SettingActivity extends PreferenceActivity {
+public class SettingActivity extends Activity {
+	private LinearLayout mAccountBtn;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.setting_preference);
+		setContentView(R.layout.setting);
+		mAccountBtn = (LinearLayout) this.findViewById(R.id.btn_account);
+		mAccountBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent mIntent = new Intent(SettingActivity.this,
+						AccountActivity.class);
+				startActivity(mIntent);
+			}
+		});
 	}
 
 }

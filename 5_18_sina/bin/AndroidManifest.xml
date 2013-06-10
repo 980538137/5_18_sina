@@ -104,6 +104,10 @@
             android:name=".ui.SettingActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        <activity
+            android:name=".ui.AccountActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
 
         <service android:name=".logic.MainService" >
             <intent-filter>
