@@ -9,7 +9,10 @@ import cn.edu.nuc.weibo.bean.UserInfo;
 import cn.edu.nuc.weibo.logic.MainService;
 import cn.edu.nuc.weibo.util.CheckNetState;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +35,7 @@ public class AccountActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		WeiboApplication.mActivities.add(this);
 		setContentView(R.layout.account);
 		initView();
 	}
@@ -58,7 +62,6 @@ public class AccountActivity extends Activity {
 				} else {
 					Intent mIntent = new Intent(AccountActivity.this,
 							WebViewActivity.class);
-
 					startActivity(mIntent);
 				}
 
@@ -74,9 +77,26 @@ public class AccountActivity extends Activity {
 					int position, long id) {
 				// TODO Auto-generated method stub
 				if (CheckNetState.checkNetworkState(AccountActivity.this)) {
-					Toast.makeText(AccountActivity.this,
-							mUserInfos.get(position).getScreen_name(),
-							Toast.LENGTH_SHORT).show();
+					UserInfo mUserInfo = mUserInfos.get(position);
+					WeiboApplication.mCurrentUserInfo = mUserInfo;
+					SharedPreferences preferences = getSharedPreferences(
+							"token_expires_in", Context.MODE_PRIVATE);
+					Editor editor = preferences.edit();
+					editor.putString("token", mUserInfo.getAccess_token());
+					editor.putString("expires_in", mUserInfo.getExpires_in());
+					editor.putString("uid", mUserInfo.getUid());
+					editor.putLong("start_time",
+							Long.valueOf(mUserInfo.getStart_time()));
+					editor.commit();
+				
+					if (WeiboApplication.mActivities.size() > 0) {
+						for (Activity activity : WeiboApplication.mActivities) {
+							activity.finish();
+						}
+					}
+					
+					AccountActivity.this.startActivity(new Intent(
+							AccountActivity.this, MainTabActivity.class));
 				} else {
 					Toast.makeText(getApplicationContext(), "网络异常，请检查网络配置",
 							Toast.LENGTH_SHORT).show();
@@ -84,9 +104,9 @@ public class AccountActivity extends Activity {
 
 			}
 		});
-		
+
 		mAccountListView.setOnLongClickListener(new OnLongClickListener() {
-			
+
 			@Override
 			public boolean onLongClick(View v) {
 				// TODO Auto-generated method stub

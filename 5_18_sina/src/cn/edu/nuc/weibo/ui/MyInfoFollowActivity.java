@@ -16,6 +16,7 @@ import android.widget.Toast;
 import cn.edu.nuc.weibo.R;
 import cn.edu.nuc.weibo.adapter.FollowAdapter;
 import cn.edu.nuc.weibo.adapter.WeiboAdapter;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Followers;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
@@ -49,6 +50,7 @@ public class MyInfoFollowActivity extends Activity implements IWeiboActivity,
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		WeiboApplication.mActivities.add(this);
 		setContentView(R.layout.myinfo_follow);
 		init();
 	}

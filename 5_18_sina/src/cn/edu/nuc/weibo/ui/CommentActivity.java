@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Task;
 import cn.edu.nuc.weibo.logic.IWeiboActivity;
 import cn.edu.nuc.weibo.logic.MainService;

@@ -3,6 +3,7 @@ package cn.edu.nuc.weibo.ui;
 import java.util.HashMap;
 
 import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Retweeted_Status;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
@@ -59,6 +60,7 @@ public class DetailWeiboActivity extends Activity implements IWeiboActivity,OnCl
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.weibo_detail);
+		WeiboApplication.mActivities.add(this);
 		Intent intent = this.getIntent();
 		status = (Status) intent.getSerializableExtra("status");
 		init();

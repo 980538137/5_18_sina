@@ -97,6 +97,7 @@ public class NewWeiboActivity extends Activity implements IWeiboActivity,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_weibo);
+		WeiboApplication.mActivities.add(this);
 		path = Environment.getExternalStorageDirectory() + "/temp.jpg";
 		
 		init();

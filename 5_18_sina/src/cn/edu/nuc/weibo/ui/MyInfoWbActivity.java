@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import cn.edu.nuc.weibo.R;
 import cn.edu.nuc.weibo.adapter.WeiboAdapter;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
 import cn.edu.nuc.weibo.logic.IWeiboActivity;
@@ -43,6 +44,7 @@ public class MyInfoWbActivity extends Activity implements IWeiboActivity,
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		WeiboApplication.mActivities.add(this);
 		setContentView(R.layout.myinfo_wb);
 		init();
 	}
@@ -131,6 +133,7 @@ public class MyInfoWbActivity extends Activity implements IWeiboActivity,
 	private void createTask(int mCurrentState, long max_id) {
 		Task mTask = null;
 		HashMap<String, Object> mTaskParams = new HashMap<String, Object>();
+		mTaskParams.put("access_token", WeiboApplication.mCurrentUserInfo.getAccess_token());
 		switch (mCurrentState) {
 		case INITIATE:
 			mTaskParams.put("state", INITIATE);

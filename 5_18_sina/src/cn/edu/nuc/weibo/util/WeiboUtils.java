@@ -30,6 +30,7 @@ import com.weibo.net.WeiboParameters;
 
 public class WeiboUtils {
 	private static final String TAG = "WeiboUtils";
+
 	/**
 	 * 获取用户信息
 	 * 
@@ -328,6 +329,8 @@ public class WeiboUtils {
 			JSONException {
 		WeiboParameters weiboParameters = new WeiboParameters();
 		weiboParameters.add("source", source);
+		weiboParameters.add("access_token",
+				(String) taskParams.get("access_token"));
 		if (taskParams != null) {
 			if (taskParams.get("max_id") != null) {
 				String max_id = (String) taskParams.get("max_id");
@@ -371,6 +374,8 @@ public class WeiboUtils {
 			JSONException {
 		WeiboParameters weiboParameters = new WeiboParameters();
 		weiboParameters.add("source", source);
+		weiboParameters.add("access_token",
+				(String) taskParams.get("access_token"));
 		if (taskParams != null) {
 			Integer filter_by_author = (Integer) taskParams
 					.get("filter_by_author");
@@ -404,6 +409,8 @@ public class WeiboUtils {
 			JSONException {
 		WeiboParameters weiboParameters = new WeiboParameters();
 		weiboParameters.add("source", source);
+		weiboParameters.add("access_token",
+				(String) taskParams.get("access_token"));
 		if (taskParams != null) {
 			// long max_id = (Long) taskParams.get("max_id");
 			// if (!TextUtils.isEmpty(String.valueOf(max_id))) {
@@ -439,6 +446,8 @@ public class WeiboUtils {
 			JSONException {
 		WeiboParameters weiboParameters = new WeiboParameters();
 		weiboParameters.add("source", source);
+		weiboParameters.add("access_token",
+				(String) taskParams.get("access_token"));
 		if (taskParams != null) {
 			// long max_id = (Long) taskParams.get("max_id");
 			// if (!TextUtils.isEmpty(String.valueOf(max_id))) {
@@ -510,6 +519,8 @@ public class WeiboUtils {
 			throws WeiboException, JSONException {
 		WeiboParameters mParameters = new WeiboParameters();
 		mParameters.add("source", source);
+		mParameters.add("access_token",
+				(String) mTaskParams.get("access_token"));
 		if (mTaskParams.get("max_id") != null) {
 			String max_id = (String) mTaskParams.get("max_id");
 			mParameters.add("max_id", max_id);
@@ -529,6 +540,8 @@ public class WeiboUtils {
 			throws WeiboException, JSONException {
 		WeiboParameters mParameters = new WeiboParameters();
 		mParameters.add("source", source);
+		mParameters.add("access_token",
+				(String) mTaskParams.get("access_token"));
 		mParameters.add("count", "20");
 		if (mTaskParams.get("max_id") != null) {
 			String max_id = (String) mTaskParams.get("max_id");

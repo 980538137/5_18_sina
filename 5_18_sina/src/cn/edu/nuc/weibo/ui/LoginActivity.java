@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.util.CheckNetState;
 
 import com.weibo.net.AccessToken;
 import com.weibo.net.Weibo;
@@ -50,9 +52,15 @@ public class LoginActivity extends Activity {
 
 					@Override
 					public void onClick(View v) {
-						startActivity(new Intent(LoginActivity.this,
-								WebViewActivity.class));
-						LoginActivity.this.finish();
+						if (!CheckNetState.checkNetworkState(LoginActivity.this)) {
+							Toast.makeText(getApplicationContext(), "网络异常，请检查网络配置",
+									Toast.LENGTH_SHORT).show();
+						}else {
+							startActivity(new Intent(LoginActivity.this,
+									WebViewActivity.class));
+							LoginActivity.this.finish();
+						}
+						
 
 					}
 				});

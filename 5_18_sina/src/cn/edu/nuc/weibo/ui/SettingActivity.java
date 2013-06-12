@@ -1,6 +1,7 @@
 package cn.edu.nuc.weibo.ui;
 
 import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ public class SettingActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setting);
+		WeiboApplication.mActivities.add(this);
 		mAccountBtn = (LinearLayout) this.findViewById(R.id.btn_account);
 		mAccountBtn.setOnClickListener(new OnClickListener() {
 
