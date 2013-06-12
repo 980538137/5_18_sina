@@ -157,6 +157,7 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 		final String expires_in = values.getString("expires_in");
 		final String uid = values.getString("uid");
 		final long start_time = System.currentTimeMillis();
+		Log.d(TAG, "uid:" + uid);
 		// 获取用户信息
 		new Thread(new Runnable() {
 
@@ -165,15 +166,33 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 				try {
 					String msgStr = WeiboUtils.getUserInfo(Weibo.getInstance(),
 							Weibo.getAppKey(), token, uid);
+					Log.d(TAG, msgStr);
 					User mUser = JsonUtils.parseJsonFromUserInfo(msgStr);
-					UserInfo mUserInfo = new UserInfo(uid, token, expires_in,
-							String.valueOf(start_time), mUser.getScreen_name());
-					WeiboApplication.mUserInfoService.saveUserInfo(mUserInfo);
-					WeiboApplication.mCurrentUser = mUser;
 					Log.d(TAG, mUser.getScreen_name());
+					UserInfo mUserInfo = new UserInfo(uid, token, expires_in,
+							String.valueOf(start_time), mUser.getScreen_name(),
+							mUser.getStatuses_count(), mUser
+									.getFavourites_count(), mUser
+									.getFollowers_count(), mUser
+									.getProfile_image_url());
+					if (WeiboApplication.mUserInfoService.isHasUser(uid)) {
+						WeiboApplication.mUserInfoService.updateUserInfo(uid,
+								mUserInfo);
+					} else {
+						WeiboApplication.mUserInfoService
+								.saveUserInfo(mUserInfo);
+					}
+
+					Log.d(TAG, "UserNum:"
+							+ WeiboApplication.mUserInfoService
+									.getAllUserInfo().size());
+					WeiboApplication.mCurrentUserInfo = mUserInfo;
+
 				} catch (WeiboException e) {
+					Log.d(TAG, "WeiboException");
 					e.printStackTrace();
 				} catch (JSONException e) {
+					Log.d(TAG, "JsonException");
 					e.printStackTrace();
 				}
 			}

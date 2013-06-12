@@ -19,7 +19,10 @@ public class DBInfo {
 		public static final String USER_TABLE = "user_table";
 		public static final String USER_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
 				+ USER_TABLE
-				+ "(_id INTEGER PRIMARY KEY AUTOINCREMENT,uid TEXT,screen_name TEXT,access_token TEXT,expires_in TEXT,start_time TEXT)";
+				+ "(_id INTEGER PRIMARY KEY AUTOINCREMENT,uid TEXT,"
+				+ "screen_name TEXT,access_token TEXT,expires_in TEXT,"
+				+ "start_time TEXT,statuses_count INTEGER,favourites_count INTEGER,"
+				+ "followers_count INTEGER,profile_image_url TEXT)";
 
 	}
 

@@ -138,6 +138,7 @@ public class HomeActivity extends BaseActivity implements IWeiboActivity {
 				break;
 			}
 		} else {
+			ll_loading.setVisibility(View.GONE);
 			btn_refresh.clearAnimation();
 			lv_weibo.onRefreshComplete();
 			Toast.makeText(this, R.string.has_get_all, Toast.LENGTH_SHORT)

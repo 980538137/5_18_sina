@@ -73,5 +73,6 @@
     <string name="attend">加关注</string>
     <string name="setting">设置</string>
     <string name="account">账号管理</string>
+    <string name="add_account">添加账号</string>
 
 </resources>

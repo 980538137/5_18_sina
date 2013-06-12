@@ -64,22 +64,6 @@
             android:text="description"
             android:textSize="16sp" />
     </LinearLayout>
-    <!--
-     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="right" >
-
-        <Button
-            android:id="@+id/btn_attention"
-            android:layout_width="70dip"
-            android:layout_height="35dip"
-            android:layout_gravity="right"
-            android:layout_marginRight="10dip"
-            android:background="@drawable/btn_attend_bg"
-            android:text="@string/cancel_attend" />
-    </LinearLayout>
-    -->
+    
 
 </LinearLayout>

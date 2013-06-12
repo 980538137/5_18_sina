@@ -9,6 +9,7 @@ import android.widget.Toast;
 import cn.edu.nuc.weibo.R;
 import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.User;
+import cn.edu.nuc.weibo.bean.UserInfo;
 import cn.edu.nuc.weibo.loadimg.SimpleImageLoader;
 import cn.edu.nuc.weibo.logic.IWeiboActivity;
 
@@ -33,13 +34,13 @@ public class MyInfoActivity extends BaseActivity implements IWeiboActivity {
 		mWbNum = (TextView) this.findViewById(R.id.tv_myinfo_wb_num);
 		mFavNum = (TextView) this.findViewById(R.id.tv_myinfo_favorite_num);
 		mFollowNum = (TextView) this.findViewById(R.id.tv_myinfo_follow_num);
-		User mUser = WeiboApplication.mCurrentUser;
-		SimpleImageLoader.showImg(mPortraitImage, mUser.getProfile_image_url(),
+		UserInfo mUserInfo = WeiboApplication.mCurrentUserInfo;
+		SimpleImageLoader.showImg(mPortraitImage, mUserInfo.getProfile_image_url(),
 				this, 1);
-		mUserName.setText(mUser.getScreen_name());
-		mWbNum.setText(mUser.getStatuses_count() + "");
-		mFavNum.setText(mUser.getFavourites_count() + "");
-		mFollowNum.setText(mUser.getFollowers_count() + "");
+		mUserName.setText(mUserInfo.getScreen_name());
+		mWbNum.setText(mUserInfo.getStatuses_count() + "");
+		mFavNum.setText(mUserInfo.getFavourites_count() + "");
+		mFollowNum.setText(mUserInfo.getFollowers_count() + "");
 	}
 
 	@Override

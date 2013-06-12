@@ -19,16 +19,17 @@ import cn.edu.nuc.weibo.bean.Geo;
 import cn.edu.nuc.weibo.bean.Geos;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
-import cn.edu.nuc.weibo.bean.User;
 import cn.edu.nuc.weibo.db.WeiboHomeService;
 import cn.edu.nuc.weibo.ui.HomeActivity;
 
+import com.weibo.net.AccessToken;
 import com.weibo.net.Utility;
 import com.weibo.net.Weibo;
 import com.weibo.net.WeiboException;
 import com.weibo.net.WeiboParameters;
 
 public class WeiboUtils {
+	private static final String TAG = "WeiboUtils";
 	/**
 	 * 获取用户信息
 	 * 
@@ -44,8 +45,9 @@ public class WeiboUtils {
 		parameters.add("access_token", token);
 		parameters.add("uid", uid);
 		String url_userinfo = Weibo.getSERVER() + "users/show.json";
+		AccessToken mAccessToken = new AccessToken(token, Weibo.getAppSecret());
 		return weibo.request(WeiboApplication.mContext, url_userinfo,
-				parameters, Utility.HTTPMETHOD_GET, weibo.getAccessToken());
+				parameters, Utility.HTTPMETHOD_GET, mAccessToken);
 	}
 
 	public static List<Status> getFriendsTimeLine(Task task,
@@ -473,6 +475,7 @@ public class WeiboUtils {
 		String place_user_timeline = weibo.request(WeiboApplication.mContext,
 				url_place_user_timeline, weiboParameters,
 				Utility.HTTPMETHOD_GET, weibo.getAccessToken());
+		Log.d(TAG, "placeinfo:" + place_user_timeline);
 		return JsonUtils.parseJsonFromStatuses(place_user_timeline);
 	}
 
@@ -544,7 +547,7 @@ public class WeiboUtils {
 		WeiboParameters mParameters = new WeiboParameters();
 		mParameters.add("source", source);
 		mParameters.add("screen_name",
-				WeiboApplication.mCurrentUser.getScreen_name());
+				WeiboApplication.mCurrentUserInfo.getScreen_name());
 		String url_user_followers = Weibo.getSERVER()
 				+ "friendships/followers.json";
 		String followersStr = weibo.request(WeiboApplication.mContext,

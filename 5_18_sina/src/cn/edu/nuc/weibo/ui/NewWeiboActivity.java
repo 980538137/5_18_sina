@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Geos;
 import cn.edu.nuc.weibo.bean.Task;
 import cn.edu.nuc.weibo.logic.IWeiboActivity;
@@ -375,10 +376,10 @@ public class NewWeiboActivity extends Activity implements IWeiboActivity,
 			if (location_state == LOCATION_OFF) {
 				location_state = LOCATION_ON;
 				HashMap<String, Object> taskParams = new HashMap<String, Object>();
-				SharedPreferences sp = this.getSharedPreferences(
-						"token_expires_in", Context.MODE_PRIVATE);
-				String uid = sp.getString("uid", "");
-				taskParams.put("uid", uid);
+//				SharedPreferences sp = this.getSharedPreferences(
+//						"token_expires_in", Context.MODE_PRIVATE);
+//				String uid = sp.getString("uid", "");
+				taskParams.put("uid", WeiboApplication.mCurrentUserInfo.getUid());
 				Task task = new Task(Task.WEIBO_PLACE_USER_TIMELINE, taskParams);
 				MainService.addTask(task);
 				MainService.addActivity(NewWeiboActivity.this);

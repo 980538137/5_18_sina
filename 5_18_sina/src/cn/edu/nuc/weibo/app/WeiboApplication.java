@@ -6,7 +6,9 @@ import com.weibo.net.Weibo;
 import com.weibo.net.WeiboException;
 
 import cn.edu.nuc.weibo.bean.User;
+import cn.edu.nuc.weibo.bean.UserInfo;
 import cn.edu.nuc.weibo.db.UserInfoService;
+import cn.edu.nuc.weibo.db.WeiboHomeService;
 import cn.edu.nuc.weibo.loadimg.AsyncImageLoader;
 import cn.edu.nuc.weibo.parsewb.ParseTimeManager;
 import cn.edu.nuc.weibo.parsewb.WeiboParseManager;
@@ -27,8 +29,9 @@ public class WeiboApplication extends Application {
 	public static Handler handler = null;
 	public static final int TIME_OUT = 1;
 	public static UserInfoService mUserInfoService = null;
-	//当前登录用户信息
-	public static User mCurrentUser;
+	public static WeiboHomeService mWeiboHomeService = null;
+	// 当前登录用户信息
+	public static UserInfo mCurrentUserInfo;
 
 	class MyHandler extends Handler {
 		@Override
@@ -46,38 +49,31 @@ public class WeiboApplication extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		mContext = this.getApplicationContext();
-		asyncImageLoader = new AsyncImageLoader(mContext);
-		weiboParseManager = new WeiboParseManager();
-		parseTimeManager = new ParseTimeManager();
+		initWeiboParse();
 		handler = new MyHandler();
-		mUserInfoService = new UserInfoService(this);
-
+		initDatabase();
+		
+		
 		SharedPreferences sp = this.getSharedPreferences("token_expires_in",
 				Context.MODE_PRIVATE);
 		final String token = sp.getString("token", "");
 		final String uid = sp.getString("uid", "");
 		if (token != null && token != "") {
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					try {
-						String msgStr;
-						msgStr = WeiboUtils.getUserInfo(Weibo.getInstance(),
-								Weibo.getAppKey(), token, uid);
-						mCurrentUser = JsonUtils.parseJsonFromUserInfo(msgStr);
-					} catch (WeiboException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}).start();
+			mCurrentUserInfo = WeiboApplication.mUserInfoService
+					.getUserInfo(uid);
 		}
 
+	}
+
+	private void initWeiboParse() {
+		asyncImageLoader = new AsyncImageLoader(mContext);
+		weiboParseManager = new WeiboParseManager();
+		parseTimeManager = new ParseTimeManager();
+	}
+
+	private void initDatabase() {
+		mUserInfoService = new UserInfoService(this);
+		mWeiboHomeService = new WeiboHomeService(this);
 	}
 
 }

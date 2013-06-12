@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Comment;
 import cn.edu.nuc.weibo.bean.Favorite;
 import cn.edu.nuc.weibo.bean.Followers;
@@ -128,7 +129,7 @@ public class MainService extends Service implements Runnable {
 			// msg.obj = return_msg;
 			break;
 		case Task.WEIBO_STATUSES_FRIENDS_TIMELINE:// 获取当前登录用户所关注用户的最新微博
-			WeiboHomeService mweiboHomeService = new WeiboHomeService(this);
+			WeiboHomeService mweiboHomeService = WeiboApplication.mWeiboHomeService;
 			mStatuses = WeiboUtils.getFriendsTimeLine(task, mweiboHomeService);
 			msg.obj = mStatuses;
 			break;

@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class SettingActivity extends Activity {
+public class SettingActivity extends BaseActivity {
 	private LinearLayout mAccountBtn;
 
 	@Override
