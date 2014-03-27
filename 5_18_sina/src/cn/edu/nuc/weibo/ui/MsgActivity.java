@@ -7,6 +7,7 @@ import java.util.List;
 import cn.edu.nuc.weibo.R;
 import cn.edu.nuc.weibo.adapter.MsgAtAdapter;
 import cn.edu.nuc.weibo.adapter.MsgCommentAdapter;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Comment;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
@@ -110,6 +111,7 @@ public class MsgActivity extends BaseActivity implements IWeiboActivity,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		WeiboApplication.mActivities.add(this);
 		setContentView(R.layout.msg);
 		init();
 		createAtTask(at_current_state, at_max_id, true);
@@ -172,6 +174,7 @@ public class MsgActivity extends BaseActivity implements IWeiboActivity,
 	private void createAtTask(int current_state, long max_id, boolean isStatus) {
 		Task task = null;
 		HashMap<String, Object> taskParams = new HashMap<String, Object>();
+		taskParams.put("access_token", WeiboApplication.mCurrentUserInfo.getAccess_token());
 		switch (current_state) {
 		case AT_INITIATE:
 			taskParams.put("state", AT_INITIATE);
@@ -205,6 +208,7 @@ public class MsgActivity extends BaseActivity implements IWeiboActivity,
 			boolean isToMe) {
 		Task mTask = null;
 		HashMap<String, Object> mTaskParams = new HashMap<String, Object>();
+		mTaskParams.put("access_token", WeiboApplication.mCurrentUserInfo.getAccess_token());
 		switch (mCurrentState) {
 		case COMMENT_INITIATE:
 			mTaskParams.put("state", COMMENT_INITIATE);

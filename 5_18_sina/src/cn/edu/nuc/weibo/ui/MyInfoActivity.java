@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.edu.nuc.weibo.R;
 import cn.edu.nuc.weibo.app.WeiboApplication;
-import cn.edu.nuc.weibo.bean.User;
 import cn.edu.nuc.weibo.bean.UserInfo;
 import cn.edu.nuc.weibo.loadimg.SimpleImageLoader;
 import cn.edu.nuc.weibo.logic.IWeiboActivity;
@@ -23,6 +21,7 @@ public class MyInfoActivity extends BaseActivity implements IWeiboActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		WeiboApplication.mActivities.add(this);
 		setContentView(R.layout.myinfo);
 		init();
 	}

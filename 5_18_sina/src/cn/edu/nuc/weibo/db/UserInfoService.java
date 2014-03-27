@@ -17,6 +17,11 @@ public class UserInfoService {
 		mDbHelper = new DBHelper(mContext);
 
 	}
+	
+	public void addTable(){
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		db.execSQL(DBInfo.Table.HOME_TABLE_CREATE);
+	}
 
 	public boolean isHasUser(String uid) {
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();

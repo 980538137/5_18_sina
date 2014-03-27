@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Task;
 import cn.edu.nuc.weibo.logic.IWeiboActivity;
 import cn.edu.nuc.weibo.logic.MainService;
@@ -67,6 +68,7 @@ public class RedirectActivity extends Activity implements OnClickListener,IWeibo
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		WeiboApplication.mActivities.add(this);
 		setContentView(R.layout.weibo_detail_redirect);
 		Intent intent = this.getIntent();
 		id = intent.getLongExtra("id", 0);

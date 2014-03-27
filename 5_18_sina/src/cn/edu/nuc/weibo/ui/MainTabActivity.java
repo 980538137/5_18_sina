@@ -8,6 +8,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TabHost;
 import cn.edu.nuc.weibo.R;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 
 public class MainTabActivity extends TabActivity {
 	private TabHost tabHost = null;
@@ -22,6 +23,7 @@ public class MainTabActivity extends TabActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.maintabs);
+		WeiboApplication.mActivities.add(this);
 		tabHost = this.getTabHost();
 		rb_home = (RadioButton) this.findViewById(R.id.rb_home);
 		rb_home.setChecked(true);

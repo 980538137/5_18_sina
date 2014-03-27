@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,9 @@ import cn.edu.nuc.weibo.R;
 import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.User;
 import cn.edu.nuc.weibo.bean.UserInfo;
+import cn.edu.nuc.weibo.db.DBInfo;
+import cn.edu.nuc.weibo.db.UserInfoService;
+import cn.edu.nuc.weibo.db.WeiboHomeService;
 import cn.edu.nuc.weibo.util.JsonUtils;
 import cn.edu.nuc.weibo.util.WeiboUtils;
 
@@ -158,6 +162,7 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 		final String uid = values.getString("uid");
 		final long start_time = System.currentTimeMillis();
 		Log.d(TAG, "uid:" + uid);
+
 		// 获取用户信息
 		new Thread(new Runnable() {
 
@@ -166,7 +171,6 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 				try {
 					String msgStr = WeiboUtils.getUserInfo(Weibo.getInstance(),
 							Weibo.getAppKey(), token, uid);
-					Log.d(TAG, msgStr);
 					User mUser = JsonUtils.parseJsonFromUserInfo(msgStr);
 					Log.d(TAG, mUser.getScreen_name());
 					UserInfo mUserInfo = new UserInfo(uid, token, expires_in,
@@ -175,6 +179,28 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 									.getFavourites_count(), mUser
 									.getFollowers_count(), mUser
 									.getProfile_image_url());
+					WeiboApplication.mCurrentUserInfo = mUserInfo;
+					Log.d(TAG,
+							"UserName:"
+									+ WeiboApplication.mCurrentUserInfo
+											.getScreen_name());
+					WeiboApplication.mUserInfoService = new UserInfoService(
+							WebViewActivity.this);
+					WeiboApplication.mWeiboHomeService = new WeiboHomeService(
+							WebViewActivity.this);
+					SQLiteDatabase db = openOrCreateDatabase("sina_weibo.db",
+							Context.MODE_PRIVATE, null);
+					
+					String HOME_TABLE = WeiboApplication.mCurrentUserInfo
+							.getScreen_name() + "_home_table";
+					String HOME_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+							+ HOME_TABLE
+							+ "(_id INTEGER PRIMARY KEY AUTOINCREMENT,id LONG,mid TEXT,portrait TEXT,username TEXT,wb_time TEXT,wb_content TEXT,wb_content_pic TEXT,wb_middle_pic TEXT,wb_subcontent TEXT,wb_subcontent_subpic TEXT,wb_submiddle_subpic TEXT,wb_subfrom TEXT,wb_subredirect INTEGER,wb_subcomment INTEGER,wb_subattitude INTEGER,wb_from TEXT,wb_redirect INTEGER,wb_comment INTEGER,wb_attitude INTEGER,verified INTEGER,verified_type INTEGER)";
+					db.execSQL("DROP TABLE IF EXISTS "
+							+ HOME_TABLE);
+					db.execSQL(HOME_TABLE_CREATE);
+					db.close();
+
 					if (WeiboApplication.mUserInfoService.isHasUser(uid)) {
 						WeiboApplication.mUserInfoService.updateUserInfo(uid,
 								mUserInfo);
@@ -182,11 +208,15 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 						WeiboApplication.mUserInfoService
 								.saveUserInfo(mUserInfo);
 					}
-
-					Log.d(TAG, "UserNum:"
-							+ WeiboApplication.mUserInfoService
-									.getAllUserInfo().size());
-					WeiboApplication.mCurrentUserInfo = mUserInfo;
+					if (WeiboApplication.mActivities.size() > 0) {
+						for (Activity activity : WeiboApplication.mActivities) {
+							activity.finish();
+						}
+					}
+					
+					WebViewActivity.this.startActivity(new Intent(
+							WebViewActivity.this, MainTabActivity.class));
+					WebViewActivity.this.finish();
 
 				} catch (WeiboException e) {
 					Log.d(TAG, "WeiboException");
@@ -211,8 +241,7 @@ public class WebViewActivity extends Activity implements WeiboDialogListener {
 		AccessToken accessToken = new AccessToken(token, Weibo.getAppSecret());
 		accessToken.setExpiresIn(expires_in);
 		Weibo.getInstance().setAccessToken(accessToken);
-		this.startActivity(new Intent(this, MainTabActivity.class));
-		this.finish();
+
 	}
 
 	@Override

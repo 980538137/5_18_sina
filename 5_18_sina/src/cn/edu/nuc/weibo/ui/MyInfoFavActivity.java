@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import cn.edu.nuc.weibo.R;
 import cn.edu.nuc.weibo.adapter.WeiboAdapter;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Favorite;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
@@ -46,6 +47,7 @@ public class MyInfoFavActivity extends Activity implements IWeiboActivity,
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myinfo_fav);
+		WeiboApplication.mActivities.add(this);
 		init();
 	}
 
@@ -138,6 +140,7 @@ public class MyInfoFavActivity extends Activity implements IWeiboActivity,
 	private void createTask(int mCurrentState, long max_id) {
 		Task mTask = null;
 		HashMap<String, Object> mTaskParams = new HashMap<String, Object>();
+		mTaskParams.put("access_token", WeiboApplication.mCurrentUserInfo.getAccess_token());
 		switch (mCurrentState) {
 		case INITIATE:
 			mTaskParams.put("state", INITIATE);

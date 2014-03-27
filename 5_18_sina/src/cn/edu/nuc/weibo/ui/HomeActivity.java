@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import cn.edu.nuc.weibo.R;
 import cn.edu.nuc.weibo.adapter.WeiboAdapter;
+import cn.edu.nuc.weibo.app.WeiboApplication;
 import cn.edu.nuc.weibo.bean.Status;
 import cn.edu.nuc.weibo.bean.Task;
 import cn.edu.nuc.weibo.logic.IWeiboActivity;
@@ -50,6 +51,7 @@ public class HomeActivity extends BaseActivity implements IWeiboActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		WeiboApplication.mActivities.add(this);
 		setContentView(R.layout.home);
 		init();
 	}
